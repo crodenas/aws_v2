@@ -4,7 +4,7 @@ AWS Systems Manager (SSM) Parameter Store operations.
 This module provides functions for interacting with AWS Systems Manager Parameter Store,
 including retrieving, creating, updating, and deleting parameters. It handles AWS API pagination
 and provides consistent error handling through the pivot_exceptions decorator.
-""""
+"""
 
 from dataclasses import dataclass
 from datetime import datetime
@@ -52,7 +52,9 @@ class Parameter:
             "Value": self.Value,
         }
         if self.LastModifiedDate:
-            result["LastModifiedDate"] = self.LastModifiedDate.strftime("%Y-%m-%dT%H:%M:%S")
+            result["LastModifiedDate"] = self.LastModifiedDate.strftime(
+                "%Y-%m-%dT%H:%M:%S"
+            )
         return result
 
 
@@ -72,7 +74,9 @@ def delete_parameter(name: str, ssm_client: boto3.client = client) -> None:
 
 
 @pivot_exceptions
-def get_parameter(name: str, decrypt: bool = True, ssm_client: boto3.client = client) -> Parameter:
+def get_parameter(
+    name: str, decrypt: bool = True, ssm_client: boto3.client = client
+) -> Parameter:
     """Retrieve a parameter from SSM Parameter Store
 
     Args:
