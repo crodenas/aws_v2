@@ -27,14 +27,14 @@ class Bucket:
 class S3Object:
     "class"
 
-    # Add more fields as needed
+    # Required fields
     Body: StreamingBody
 
-    def __init__(self, **kwargs):
-        "function"
-        self.Body = kwargs.get("Body")
-        # You can add more fields here as needed
-        # Example: self.ContentLength = kwargs.get("ContentLength")
+    # Optional fields with defaults
+    ContentType: str = None
+    ContentLength: int = None
+    LastModified: datetime = None
+    ETag: str = None
 
 
 @dataclass
@@ -43,10 +43,6 @@ class S3ObjectMetadata:
 
     # Add more fields as needed
     Key: str
-
-    def __init__(self, **kwargs):
-        "function"
-        self.Key = kwargs["Key"]
 
 
 # pylint: enable=invalid-name
@@ -59,7 +55,14 @@ def get_object(
 ) -> S3Object:
     "function"
     response = s3_client.get_object(Bucket=bucket_name, Key=key)
-    return S3Object(**response)
+    # Create S3Object with the Body and pass other fields as keyword arguments
+    return S3Object(
+        Body=response["Body"],
+        ContentType=response.get("ContentType"),
+        ContentLength=response.get("ContentLength"),
+        LastModified=response.get("LastModified"),
+        ETag=response.get("ETag"),
+    )
 
 
 @pivot_exceptions
