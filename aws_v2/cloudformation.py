@@ -1,6 +1,5 @@
 "module"
 
-# pylint: disable=unused-import
 from dataclasses import dataclass
 from typing import List
 
@@ -49,9 +48,12 @@ def create_stack(
     template_url: str,
     parameters: List,
     capabilities: List,
-    cloudformation_client: boto3.client = client,
+    cloudformation_client: boto3.client = None,
 ) -> CreateStackResponse:
     "function"
+
+    if cloudformation_client is None:
+        cloudformation_client = client
 
     response = cloudformation_client.create_stack(
         StackName=stack_name,
@@ -66,9 +68,13 @@ def create_stack(
 @pivot_exceptions
 def describe_stacks(
     stack_name: str = None,
-    cloudformation_client: boto3.client = client,
+    cloudformation_client: boto3.client = None,
 ) -> List[StackDescription]:
     "function"
+
+    if cloudformation_client is None:
+        cloudformation_client = client
+
     results = []
 
     paginator = cloudformation_client.get_paginator("describe_stacks")
@@ -82,9 +88,13 @@ def describe_stacks(
 @pivot_exceptions
 def list_stacks(
     stack_status_filter: str = None,
-    cloudformation_client: boto3.client = client,
+    cloudformation_client: boto3.client = None,
 ) -> List[StackSummary]:
     "function"
+
+    if cloudformation_client is None:
+        cloudformation_client = client
+
     results = []
 
     params = {}
