@@ -51,18 +51,18 @@ class TestEC2(unittest.TestCase):
 
         # Verify the results
         self.assertEqual(len(result), 3)
-        self.assertEqual(result[0].GroupId, "sg-12345")
-        self.assertEqual(result[0].GroupName, "default")
-        self.assertEqual(result[0].Description, "default VPC security group")
-        self.assertEqual(result[0].VpcId, "vpc-12345")
+        self.assertEqual(result[0].group_id, "sg-12345")
+        self.assertEqual(result[0].group_name, "default")
+        self.assertEqual(result[0].description, "default VPC security group")
+        self.assertEqual(result[0].vpc_id, "vpc-12345")
 
-        self.assertEqual(result[1].GroupId, "sg-67890")
-        self.assertEqual(result[1].GroupName, "web-servers")
+        self.assertEqual(result[1].group_id, "sg-67890")
+        self.assertEqual(result[1].group_name, "web-servers")
 
-        self.assertEqual(result[2].GroupId, "sg-abcde")
-        self.assertEqual(result[2].GroupName, "db-servers")
-        self.assertEqual(result[2].Description, "Security group for database servers")
-        self.assertEqual(result[2].VpcId, "vpc-67890")
+        self.assertEqual(result[2].group_id, "sg-abcde")
+        self.assertEqual(result[2].group_name, "db-servers")
+        self.assertEqual(result[2].description, "Security group for database servers")
+        self.assertEqual(result[2].vpc_id, "vpc-67890")
 
         # Verify the paginator was used correctly
         mock_ec2.get_paginator.assert_called_once_with("describe_security_groups")

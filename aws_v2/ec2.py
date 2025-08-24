@@ -11,20 +11,14 @@ from .exceptions import pivot_exceptions
 client = session.client("ec2")
 
 
-# Data models
-# pylint: disable=invalid-name
 @dataclass
 class SecurityGroup:
     """Represents an AWS EC2 security group."""
 
-    GroupId: str
-    GroupName: str
-    Description: str
-    VpcId: str
-
-
-# pylint: enable=invalid-name
-# End Data models
+    group_id: str
+    group_name: str
+    description: str
+    vpc_id: str
 
 
 @pivot_exceptions
@@ -38,10 +32,10 @@ def describe_security_groups(ec2_client: boto3.client = None) -> List[SecurityGr
         for sg in page["SecurityGroups"]:
             results.append(
                 SecurityGroup(
-                    GroupId=sg.get("GroupId", ""),
-                    GroupName=sg.get("GroupName", ""),
-                    Description=sg.get("Description", ""),
-                    VpcId=sg.get("VpcId", ""),
+                    group_id=sg.get("GroupId", ""),
+                    group_name=sg.get("GroupName", ""),
+                    description=sg.get("Description", ""),
+                    vpc_id=sg.get("VpcId", ""),
                 )
             )
     return results
