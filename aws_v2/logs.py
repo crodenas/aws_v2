@@ -20,9 +20,11 @@ def filter_log_events(
     end_time: datetime = None,
     filter_pattern: str = None,
     limit: int = None,
-    logs_client: boto3.client = client,
+    logs_client: boto3.client = None,
 ) -> List[Dict]:
     "function"
+    if logs_client is None:
+        logs_client = client
 
     events = []
     payload = {

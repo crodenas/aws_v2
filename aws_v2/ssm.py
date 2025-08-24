@@ -29,8 +29,6 @@ config = Config(
 client = session.client("ssm", config=config)
 
 
-# Data models
-# pylint: disable=invalid-name
 @dataclass
 class Parameter:
     """Represents an SSM Parameter with its attributes
@@ -58,24 +56,22 @@ class Parameter:
         return result
 
 
-# pylint: enable=invalid-name
-# End Data models
-
-
 @pivot_exceptions
-def delete_parameter(name: str, ssm_client: boto3.client = client) -> None:
+def delete_parameter(name: str, ssm_client: boto3.client = None) -> None:
     """Delete a parameter from SSM Parameter Store
 
     Args:
         name: Name of the parameter to delete
         ssm_client: Optional boto3 SSM client to use
     """
+    if ssm_client is None:
+        ssm_client = client
     ssm_client.delete_parameter(Name=name)
 
 
 @pivot_exceptions
 def get_parameter(
-    name: str, decrypt: bool = True, ssm_client: boto3.client = client
+    name: str, decrypt: bool = True, ssm_client: boto3.client = None
 ) -> Parameter:
     """Retrieve a parameter from SSM Parameter Store
 
@@ -87,6 +83,8 @@ def get_parameter(
     Returns:
         Parameter: A Parameter object containing the requested parameter data
     """
+    if ssm_client is None:
+        ssm_client = client
     response = ssm_client.get_parameter(Name=name, WithDecryption=decrypt)
     parameter = response["Parameter"]
 
@@ -99,7 +97,7 @@ def get_parameter(
 
 @pivot_exceptions
 def get_parameters_by_path(
-    path: str, decrypt: bool = True, ssm_client: boto3.client = client
+    path: str, decrypt: bool = True, ssm_client: boto3.client = None
 ) -> List[Parameter]:
     """Retrieve all parameters under a specific path hierarchy from SSM Parameter Store
 
@@ -112,6 +110,9 @@ def get_parameters_by_path(
         List[Parameter]: A list of Parameter objects matching the path
     """
     results = []
+
+    if ssm_client is None:
+        ssm_client = client
 
     paginator = ssm_client.get_paginator("get_parameters_by_path")
     for page in paginator.paginate(Path=path, WithDecryption=decrypt):
@@ -132,7 +133,7 @@ def put_parameter(
     parameter: Parameter,
     overwrite: bool = True,
     param_type: str = "SecureString",
-    ssm_client: boto3.client = client,
+    ssm_client: boto3.client = None,
 ) -> None:
     """Store a parameter in SSM Parameter Store
 
@@ -142,6 +143,8 @@ def put_parameter(
         param_type: Parameter type, one of 'String', 'StringList', or 'SecureString' (default: 'SecureString')
         ssm_client: Optional boto3 SSM client to use
     """
+    if ssm_client is None:
+        ssm_client = client
     ssm_client.put_parameter(
         Name=parameter.name,
         Value=parameter.value,

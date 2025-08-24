@@ -15,9 +15,11 @@ def create_account_assignment(
     principal_id: str,
     target_id: str,
     principal_type: str,
-    sso_admin_client: boto3.client = client,
+    sso_admin_client: boto3.client = None,
 ) -> str:
     "function"
+    if sso_admin_client is None:
+        sso_admin_client = client
     response = sso_admin_client.create_account_assignment(
         InstanceArn=instance_arn,
         PermissionSetArn=permission_set_arn,
