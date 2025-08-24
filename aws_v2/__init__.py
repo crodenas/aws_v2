@@ -6,20 +6,15 @@ from datetime import datetime
 import boto3
 
 
-# Data models
-# pylint: disable=invalid-name
 @dataclass
 class CredentialsObject:
     "class"
 
-    AccessKeyId: str
-    SecretAccessKey: str
-    SessionToken: str
-    Expiration: datetime
+    access_key_id: str
+    secret_access_key: str
+    session_token: str
+    expiration: datetime
 
-
-# pylint: enable=invalid-name
-# End Data models
 
 session: boto3.session.Session = boto3.session.Session()
 if session.region_name is None:
@@ -41,8 +36,8 @@ def get_session(
     "function"
 
     return boto3.session.Session(
-        aws_access_key_id=credentials.AccessKeyId,
-        aws_secret_access_key=credentials.SecretAccessKey,
-        aws_session_token=credentials.SessionToken,
+        aws_access_key_id=credentials.access_key_id,
+        aws_secret_access_key=credentials.secret_access_key,
+        aws_session_token=credentials.session_token,
         region_name=region_name,
     )

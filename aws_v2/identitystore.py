@@ -14,24 +14,18 @@ from .exceptions import pivot_exceptions
 client = session.client("identitystore")
 
 
-# Data models
-# pylint: disable=invalid-name
 @dataclass
 class Group:
     """
     Represents a group in the AWS Identity Store.
 
     Attributes:
-        GroupId (str): The unique identifier of the group.
-        DisplayName (str): The display name of the group.
+        group_id (str): The unique identifier of the group.
+        display_name (str): The display name of the group.
     """
 
-    GroupId: str
-    DisplayName: str
-
-
-# pylint: enable=invalid-name
-# End Data models
+    group_id: str
+    display_name: str
 
 
 @pivot_exceptions
@@ -53,6 +47,9 @@ def list_groups(
 
     paginator = identitystore_client.get_paginator("list_groups")
     for page in paginator.paginate(IdentityStoreId=identitystore_id):
-        results.extend(Group(**group) for group in page["Groups"])
+        results.extend(
+            Group(group_id=group["GroupId"], display_name=group["DisplayName"])
+            for group in page["Groups"]
+        )
 
     return results

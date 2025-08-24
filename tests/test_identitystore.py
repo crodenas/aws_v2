@@ -35,8 +35,8 @@ class TestIdentityStore(unittest.TestCase):
 
         # Assertions
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[0], Group(GroupId="group1", DisplayName="Group 1"))
-        self.assertEqual(result[1], Group(GroupId="group2", DisplayName="Group 2"))
+        self.assertEqual(result[0], Group(group_id="group1", display_name="Group 1"))
+        self.assertEqual(result[1], Group(group_id="group2", display_name="Group 2"))
 
 
 if __name__ == "__main__":
