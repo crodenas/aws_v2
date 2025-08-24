@@ -3,21 +3,28 @@
 from typing import List
 from dataclasses import dataclass
 
-
-@dataclass
-class SecurityGroup:
-    GroupId: str
-    GroupName: str
-    Description: str
-    VpcId: str
-
-
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
 
 client = session.client("ec2")
+
+
+# Data models
+# pylint: disable=invalid-name
+@dataclass
+class SecurityGroup:
+    """Represents an AWS EC2 security group."""
+
+    GroupId: str
+    GroupName: str
+    Description: str
+    VpcId: str
+
+
+# pylint: enable=invalid-name
+# End Data models
 
 
 @pivot_exceptions
