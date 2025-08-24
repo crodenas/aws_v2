@@ -45,11 +45,6 @@ class PolicyEntities:
     PolicyUsers: List[User]
     PolicyRoles: List[Role]
 
-    def __init__(self, **kwargs):
-        self.PolicyGroups = [Group(**group) for group in kwargs["PolicyGroups"]]
-        self.PolicyUsers = [User(**user) for user in kwargs["PolicyUsers"]]
-        self.PolicyRoles = [Role(**role) for role in kwargs["PolicyRoles"]]
-
 
 # pylint: enable=invalid-name
 # End Data models
@@ -80,4 +75,8 @@ def list_entities_for_policy(
     for page in paginator.paginate(**params):
         results.update(page)
 
-    return PolicyEntities(**results)
+    return PolicyEntities(
+        PolicyGroups=[Group(**group) for group in results.get("PolicyGroups", [])],
+        PolicyUsers=[User(**user) for user in results.get("PolicyUsers", [])],
+        PolicyRoles=[Role(**role) for role in results.get("PolicyRoles", [])],
+    )
