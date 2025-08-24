@@ -1,7 +1,7 @@
 "module"
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 import boto3
 
@@ -14,28 +14,12 @@ client = session.client("cloudformation")
 # Data models
 # pylint: disable=invalid-name
 @dataclass
-class StackSummary:
-    "class"
+class StackResponse:
+    """Unified data model for stack responses."""
 
-    # Add more fields as needed
-    StackId: str
-    StackName: str
-
-
-@dataclass
-class StackDescription:
-    "class"
-
-    # Add more fields as needed
-    StackId: str
-    StackName: str
-
-
-@dataclass
-class CreateStackResponse:
-    "class"
-
-    StackId: str
+    StackId: Optional[str] = None
+    StackName: Optional[str] = None
+    # Add more optional fields as needed
 
 
 # pylint: enable=invalid-name
@@ -49,7 +33,7 @@ def create_stack(
     parameters: List,
     capabilities: List,
     cloudformation_client: boto3.client = None,
-) -> CreateStackResponse:
+) -> StackResponse:
     "function"
 
     if cloudformation_client is None:
@@ -62,14 +46,14 @@ def create_stack(
         Capabilities=capabilities,
     )
 
-    return CreateStackResponse(**response)
+    return StackResponse(StackId=response["StackId"])
 
 
 @pivot_exceptions
 def describe_stacks(
     stack_name: str = None,
     cloudformation_client: boto3.client = None,
-) -> List[StackDescription]:
+) -> List[StackResponse]:
     "function"
 
     if cloudformation_client is None:
@@ -80,7 +64,11 @@ def describe_stacks(
     paginator = cloudformation_client.get_paginator("describe_stacks")
     for page in paginator.paginate(StackName=stack_name):
         for stack in page["Stacks"]:
-            results.append(StackDescription(**stack))
+            results.append(
+                StackResponse(
+                    StackId=stack.get("StackId"), StackName=stack.get("StackName")
+                )
+            )
 
     return results
 
@@ -89,7 +77,7 @@ def describe_stacks(
 def list_stacks(
     stack_status_filter: str = None,
     cloudformation_client: boto3.client = None,
-) -> List[StackSummary]:
+) -> List[StackResponse]:
     "function"
 
     if cloudformation_client is None:
@@ -104,6 +92,10 @@ def list_stacks(
     paginator = cloudformation_client.get_paginator("list_stacks")
     for page in paginator.paginate(**params):
         for summary in page["StackSummaries"]:
-            results.append(StackSummary(**summary))
+            results.append(
+                StackResponse(
+                    StackId=summary.get("StackId"), StackName=summary.get("StackName")
+                )
+            )
 
     return results
