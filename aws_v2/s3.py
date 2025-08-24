@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import List
 
 import boto3
+from botocore.response import StreamingBody
 
 from . import session
 from .exceptions import pivot_exceptions
@@ -23,15 +24,6 @@ class Bucket:
 
 
 @dataclass
-class StreamingBody:
-    "class"
-
-    def read(self):
-        "function"
-        return self.read()
-
-
-@dataclass
 class S3Object:
     "class"
 
@@ -40,7 +32,9 @@ class S3Object:
 
     def __init__(self, **kwargs):
         "function"
-        self.Body = kwargs["Body"]
+        self.Body = kwargs.get("Body")
+        # You can add more fields here as needed
+        # Example: self.ContentLength = kwargs.get("ContentLength")
 
 
 @dataclass
