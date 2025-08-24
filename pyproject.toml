@@ -8,3 +8,7 @@ dependencies = [
     "boto3>=1.40.16",
     "flake8>=7.3.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

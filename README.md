@@ -31,6 +31,16 @@ See https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.ht
 
 **Note**: You could directly use the assumed role session to create service clients.  But doing so you will not have the excptions transformed into something local.
 
+### Running Tests
+
+The project uses Python's unittest framework for testing. To run all tests:
+
+```sh
+python -m unittest discover tests
+```
+
+Tests are organized in the `tests` directory, separate from the main package code.
+
 #### All boto3 exceptions are pivoting into local exceptions
 ```sh
 >>> from aws_v2.exceptions import AwsError
