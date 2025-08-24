@@ -1,4 +1,5 @@
 "module"
+
 import boto3
 from botocore import waiter
 
@@ -23,10 +24,10 @@ def get_client_with_role(
 
 
 def create_waiter(
-    waiter_name: str, waiter_config: dict, client: boto3.client = None,
+    waiter_name: str,
+    waiter_config: dict,
+    client: boto3.client = None,
 ) -> waiter.Waiter:
     "function"
     waiter_model = waiter.WaiterModel(waiter_config)
-    return waiter.create_waiter_with_client(
-        waiter_name, waiter_model, client
-    )
+    return waiter.create_waiter_with_client(waiter_name, waiter_model, client)

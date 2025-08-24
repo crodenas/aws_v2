@@ -24,9 +24,6 @@ class CredentialsObject:
 
 session: boto3.session.Session = boto3.session.Session()
 if session.region_name is None:
-    # TODO: Add this to logging, once we get logging set up
-    # print("*** No AWS_REGION found in environment variables;
-    # setting to us-east-2 ***")
     session = boto3.session.Session(region_name="us-east-2")
 
 

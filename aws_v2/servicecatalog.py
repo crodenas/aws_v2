@@ -28,7 +28,7 @@ def get_provisioned_product_outputs(
         if next_token:
             params["PageToken"] = next_token
         response = servicecatalog_client.scan_provisioned_products(**params)
-        results.extend(response["Outputs"])
+        results.extend(response["ProvisionedProducts"])
         next_token = response.get("NextPageToken")
         if not next_token:
             break
