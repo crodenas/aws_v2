@@ -14,6 +14,8 @@ from .exceptions import pivot_exceptions
 client = session.client("identitystore")
 
 
+# Data models
+# pylint: disable=invalid-name
 @dataclass
 class Group:
     """
@@ -26,6 +28,10 @@ class Group:
 
     GroupId: str
     DisplayName: str
+
+
+# pylint: enable=invalid-name
+# End Data models
 
 
 @pivot_exceptions
