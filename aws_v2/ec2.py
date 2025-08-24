@@ -1,6 +1,6 @@
-"module"
+"""EC2 utility functions for AWS operations."""
 
-from typing import Dict, List
+from typing import Dict, List, Any
 
 import boto3
 
@@ -11,14 +11,12 @@ client = session.client("ec2")
 
 
 @pivot_exceptions
-def describe_security_groups(
-    ec2_client: boto3.client = client,
-) -> List[Dict]:
-    "function"
+def describe_security_groups(ec2_client: boto3.client = None) -> List[Dict[str, Any]]:
+    """Retrieve all EC2 security groups using pagination."""
+    if ec2_client is None:
+        ec2_client = client
     results = []
-
     paginator = ec2_client.get_paginator("describe_security_groups")
     for page in paginator.paginate():
         results.extend(page["SecurityGroups"])
-
     return results
