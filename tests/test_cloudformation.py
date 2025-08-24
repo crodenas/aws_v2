@@ -7,7 +7,7 @@ class TestCloudFormation(unittest.TestCase):
 
     @patch("aws_v2.cloudformation.client")
     def test_create_stack(self, mock_client):
-        mock_response = {"StackId": "test-stack-id"}
+        mock_response = {"StackId": "test-stack-id", "StackName": "test-stack"}
         mock_client.create_stack.return_value = mock_response
 
         stack_name = "test-stack"
@@ -19,7 +19,8 @@ class TestCloudFormation(unittest.TestCase):
             stack_name, template_url, parameters, capabilities, mock_client
         )
 
-        self.assertEqual(response.StackId, "test-stack-id")
+        self.assertEqual(response.stack_id, "test-stack-id")
+        self.assertEqual(response.stack_name, "test-stack")
         mock_client.create_stack.assert_called_once_with(
             StackName=stack_name,
             TemplateURL=template_url,
@@ -37,8 +38,8 @@ class TestCloudFormation(unittest.TestCase):
         response = describe_stacks("test-stack", mock_client)
 
         self.assertEqual(len(response), 1)
-        self.assertEqual(response[0].StackId, "test-stack-id")
-        self.assertEqual(response[0].StackName, "test-stack")
+        self.assertEqual(response[0].stack_id, "test-stack-id")
+        self.assertEqual(response[0].stack_name, "test-stack")
 
     @patch("aws_v2.cloudformation.client")
     def test_list_stacks(self, mock_client):
@@ -50,8 +51,8 @@ class TestCloudFormation(unittest.TestCase):
         response = list_stacks("CREATE_COMPLETE", mock_client)
 
         self.assertEqual(len(response), 1)
-        self.assertEqual(response[0].StackId, "test-stack-id")
-        self.assertEqual(response[0].StackName, "test-stack")
+        self.assertEqual(response[0].stack_id, "test-stack-id")
+        self.assertEqual(response[0].stack_name, "test-stack")
 
 
 if __name__ == "__main__":

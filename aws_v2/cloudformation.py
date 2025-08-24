@@ -12,18 +12,13 @@ client = session.client("cloudformation")
 
 
 # Data models
-# pylint: disable=invalid-name
 @dataclass
 class StackResponse:
     """Unified data model for stack responses."""
 
-    StackId: Optional[str] = None
-    StackName: Optional[str] = None
+    stack_id: Optional[str] = None
+    stack_name: Optional[str] = None
     # Add more optional fields as needed
-
-
-# pylint: enable=invalid-name
-# End Data models
 
 
 @pivot_exceptions
@@ -46,7 +41,10 @@ def create_stack(
         Capabilities=capabilities,
     )
 
-    return StackResponse(StackId=response["StackId"])
+    return StackResponse(
+        stack_id=response["StackId"],
+        stack_name=response["StackName"],
+    )
 
 
 @pivot_exceptions
@@ -66,7 +64,8 @@ def describe_stacks(
         for stack in page["Stacks"]:
             results.append(
                 StackResponse(
-                    StackId=stack.get("StackId"), StackName=stack.get("StackName")
+                    stack_id=stack.get("StackId"),
+                    stack_name=stack.get("StackName"),
                 )
             )
 
@@ -94,7 +93,8 @@ def list_stacks(
         for summary in page["StackSummaries"]:
             results.append(
                 StackResponse(
-                    StackId=summary.get("StackId"), StackName=summary.get("StackName")
+                    stack_id=summary.get("StackId"),
+                    stack_name=summary.get("StackName"),
                 )
             )
 
