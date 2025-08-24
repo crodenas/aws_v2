@@ -36,23 +36,23 @@ class Parameter:
     """Represents an SSM Parameter with its attributes
 
     Attributes:
-        Name: The name/key of the parameter
-        Value: The value of the parameter
-        LastModifiedDate: When the parameter was last modified (optional)
+        name: The name/key of the parameter
+        value: The value of the parameter
+        last_modified_date: When the parameter was last modified (optional)
     """
 
-    Name: str
-    Value: str
-    LastModifiedDate: datetime = None
+    name: str
+    value: str
+    last_modified_date: datetime = None
 
     def to_dict(self):
         """Convert Parameter to a dictionary for JSON serialization"""
         result = {
-            "Name": self.Name,
-            "Value": self.Value,
+            "Name": self.name,
+            "Value": self.value,
         }
-        if self.LastModifiedDate:
-            result["LastModifiedDate"] = self.LastModifiedDate.strftime(
+        if self.last_modified_date:
+            result["LastModifiedDate"] = self.last_modified_date.strftime(
                 "%Y-%m-%dT%H:%M:%S"
             )
         return result
@@ -91,9 +91,9 @@ def get_parameter(
     parameter = response["Parameter"]
 
     return Parameter(
-        Name=parameter["Name"],
-        Value=parameter["Value"],
-        LastModifiedDate=parameter["LastModifiedDate"],
+        name=parameter["Name"],
+        value=parameter["Value"],
+        last_modified_date=parameter["LastModifiedDate"],
     )
 
 
@@ -118,9 +118,9 @@ def get_parameters_by_path(
         for parameter in page["Parameters"]:
             results.append(
                 Parameter(
-                    Name=parameter["Name"],
-                    Value=parameter["Value"],
-                    LastModifiedDate=parameter["LastModifiedDate"],
+                    name=parameter["Name"],
+                    value=parameter["Value"],
+                    last_modified_date=parameter["LastModifiedDate"],
                 )
             )
 
@@ -143,8 +143,8 @@ def put_parameter(
         ssm_client: Optional boto3 SSM client to use
     """
     ssm_client.put_parameter(
-        Name=parameter.Name,
-        Value=parameter.Value,
+        Name=parameter.name,
+        Value=parameter.value,
         Overwrite=overwrite,
         Type=param_type,
     )

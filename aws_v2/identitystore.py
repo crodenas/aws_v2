@@ -30,7 +30,7 @@ class Group:
 
 @pivot_exceptions
 def list_groups(
-    identitystore_id: str, identitystore_client: boto3.client = client
+    identitystore_id: str, identitystore_client: boto3.client = None
 ) -> List[Group]:
     """
     Lists all groups in the specified AWS Identity Store.
@@ -44,6 +44,9 @@ def list_groups(
         List[Group]: A list of Group objects representing the groups in the Identity Store.
     """
     results = []
+
+    if identitystore_client is None:
+        identitystore_client = client
 
     paginator = identitystore_client.get_paginator("list_groups")
     for page in paginator.paginate(IdentityStoreId=identitystore_id):

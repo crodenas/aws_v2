@@ -13,14 +13,12 @@ from .exceptions import pivot_exceptions
 client = session.client("s3")
 
 
-# Data models
-# pylint: disable=invalid-name
 @dataclass
 class Bucket:
     "class"
 
-    Name: str
-    CreationDate: datetime
+    name: str
+    creation_date: datetime
 
 
 @dataclass
@@ -28,13 +26,13 @@ class S3Object:
     "class"
 
     # Required fields
-    Body: StreamingBody
+    body: StreamingBody
 
     # Optional fields with defaults
-    ContentType: str = None
-    ContentLength: int = None
-    LastModified: datetime = None
-    ETag: str = None
+    content_type: str = None
+    content_length: int = None
+    last_modified: datetime = None
+    etag: str = None
 
 
 @dataclass
@@ -42,32 +40,30 @@ class S3ObjectMetadata:
     "class"
 
     # Add more fields as needed
-    Key: str
-
-
-# pylint: enable=invalid-name
-# End Data models
+    key: str
 
 
 @pivot_exceptions
-def get_object(
-    bucket_name: str, key: str, s3_client: boto3.client = client
-) -> S3Object:
+def get_object(bucket_name: str, key: str, s3_client: boto3.client = None) -> S3Object:
     "function"
+    if s3_client is None:
+        s3_client = client
     response = s3_client.get_object(Bucket=bucket_name, Key=key)
     # Create S3Object with the Body and pass other fields as keyword arguments
     return S3Object(
-        Body=response["Body"],
-        ContentType=response.get("ContentType"),
-        ContentLength=response.get("ContentLength"),
-        LastModified=response.get("LastModified"),
-        ETag=response.get("ETag"),
+        body=response["Body"],
+        content_type=response.get("ContentType"),
+        content_length=response.get("ContentLength"),
+        last_modified=response.get("LastModified"),
+        etag=response.get("ETag"),
     )
 
 
 @pivot_exceptions
-def list_buckets(s3_client: boto3.client = client) -> List[Bucket]:
+def list_buckets(s3_client: boto3.client = None) -> List[Bucket]:
     "function"
+    if s3_client is None:
+        s3_client = client
     pager = s3_client.get_paginator("list_buckets")
     response = pager.paginate()
     buckets = []
@@ -79,9 +75,11 @@ def list_buckets(s3_client: boto3.client = client) -> List[Bucket]:
 
 @pivot_exceptions
 def list_bucket_contents(
-    bucket_name: str, s3_client: boto3.client = client
+    bucket_name: str, s3_client: boto3.client = None
 ) -> List[S3ObjectMetadata]:
     "function"
+    if s3_client is None:
+        s3_client = client
     pager = s3_client.get_paginator("list_objects_v2")
     response = pager.paginate(Bucket=bucket_name)
     object_list = []

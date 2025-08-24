@@ -16,20 +16,20 @@ client = session.client("sts")
 class AssumedRoleUserObject:
     "class"
 
-    AssumedRoleId: str
-    Arn: str
+    assumed_role_id: str
+    arn: str
 
 
 @dataclass
 class AssumeRoleResponse:
     "class"
 
-    Credentials: CredentialsObject
-    AssumedRoleUser: AssumedRoleUserObject
+    credentials: CredentialsObject
+    assumed_role_user: AssumedRoleUserObject
 
     def __init__(self, **kwargs):
-        self.Credentials = CredentialsObject(**kwargs["Credentials"])
-        self.AssumedRoleUser = AssumedRoleUserObject(**kwargs["AssumedRoleUser"])
+        self.credentials = CredentialsObject(**kwargs["Credentials"])
+        self.assumed_role_user = AssumedRoleUserObject(**kwargs["AssumedRoleUser"])
 
 
 # pylint: enable=invalid-name

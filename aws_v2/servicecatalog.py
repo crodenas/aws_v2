@@ -14,10 +14,13 @@ client = session.client("servicecatalog")
 def get_provisioned_product_outputs(
     provisioned_product_id: str = None,
     provisioned_product_name: str = None,
-    servicecatalog_client: boto3.client = client,
+    servicecatalog_client: boto3.client = None,
 ) -> List:
     "function"
     results = []
+
+    if servicecatalog_client is None:
+        servicecatalog_client = client
 
     next_token: str = None
     while True:
@@ -38,10 +41,13 @@ def get_provisioned_product_outputs(
 
 @pivot_exceptions
 def scan_provisioned_products(
-    servicecatalog_client: boto3.client = client,
+    servicecatalog_client: boto3.client = None,
 ) -> List:
     "function"
     results = []
+
+    if servicecatalog_client is None:
+        servicecatalog_client = client
 
     paginator = servicecatalog_client.get_paginator("scan_provisioned_products")
     for page in paginator.paginate():
@@ -52,10 +58,13 @@ def scan_provisioned_products(
 
 @pivot_exceptions
 def search_products(
-    servicecatalog_client: boto3.client = client,
+    servicecatalog_client: boto3.client = None,
 ) -> List:
     "function"
     results = []
+
+    if servicecatalog_client is None:
+        servicecatalog_client = client
 
     next_token: str = None
     while True:
@@ -73,10 +82,13 @@ def search_products(
 
 @pivot_exceptions
 def search_provisioned_products(
-    servicecatalog_client: boto3.client = client,
+    servicecatalog_client: boto3.client = None,
 ) -> List:
     "function"
     results = []
+
+    if servicecatalog_client is None:
+        servicecatalog_client = client
 
     next_token: str = None
     while True:
