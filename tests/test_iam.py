@@ -1,7 +1,8 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from aws_v2.iam import list_entities_for_policy, Group, User, Role, PolicyEntities
+from aws_v2.iam import (Group, PolicyEntities, Role, User,
+                        list_entities_for_policy)
 
 
 class TestIAM(unittest.TestCase):
