@@ -1,7 +1,7 @@
 """EC2 utility functions for AWS operations."""
 
-from typing import List
 from dataclasses import dataclass
+from typing import List
 
 import boto3
 
