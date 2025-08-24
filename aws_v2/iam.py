@@ -11,43 +11,37 @@ from .exceptions import pivot_exceptions
 client = session.client("iam")
 
 
-# Data models
-# pylint: disable=invalid-name
 @dataclass
 class Group:
     "class"
 
-    GroupName: str
-    GroupId: str
+    group_name: str
+    group_id: str
 
 
 @dataclass
 class User:
     "class"
 
-    UserName: str
-    UserId: str
+    user_name: str
+    user_id: str
 
 
 @dataclass
 class Role:
     "class"
 
-    RoleName: str
-    RoleId: str
+    role_name: str
+    role_id: str
 
 
 @dataclass
 class PolicyEntities:
     "class"
 
-    PolicyGroups: List[Group]
-    PolicyUsers: List[User]
-    PolicyRoles: List[Role]
-
-
-# pylint: enable=invalid-name
-# End Data models
+    policy_groups: List[Group]
+    policy_users: List[User]
+    policy_roles: List[Role]
 
 
 @pivot_exceptions
@@ -56,9 +50,12 @@ def list_entities_for_policy(
     entity_filter: str = None,
     path_prefix: str = None,
     policy_usage_filter: str = None,
-    iam_client: boto3.client = client,
+    iam_client: boto3.client = None,
 ) -> PolicyEntities:
     "function"
+    if iam_client is None:
+        iam_client = client
+
     results = {}
 
     params = {
@@ -76,7 +73,16 @@ def list_entities_for_policy(
         results.update(page)
 
     return PolicyEntities(
-        PolicyGroups=[Group(**group) for group in results.get("PolicyGroups", [])],
-        PolicyUsers=[User(**user) for user in results.get("PolicyUsers", [])],
-        PolicyRoles=[Role(**role) for role in results.get("PolicyRoles", [])],
+        policy_groups=[
+            Group(group_name=group["GroupName"], group_id=group["GroupId"])
+            for group in results.get("PolicyGroups", [])
+        ],
+        policy_users=[
+            User(user_name=user["UserName"], user_id=user["UserId"])
+            for user in results.get("PolicyUsers", [])
+        ],
+        policy_roles=[
+            Role(role_name=role["RoleName"], role_id=role["RoleId"])
+            for role in results.get("PolicyRoles", [])
+        ],
     )
