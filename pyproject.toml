@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "boto3>=1.40.16",
+    "flake8>=7.3.0",
 ]
