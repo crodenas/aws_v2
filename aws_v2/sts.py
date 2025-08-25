@@ -9,8 +9,11 @@ import boto3
 
 from . import CredentialsObject, session
 from .exceptions import pivot_exceptions
-from .models.sts import (AssumedRoleUserObject, AssumeRoleResponse,
-                         CallerIdentityResponse)
+from .models.sts import (
+    AssumedRoleUserObject,
+    AssumeRoleResponse,
+    CallerIdentityResponse,
+)
 
 client = session.client("sts")
 

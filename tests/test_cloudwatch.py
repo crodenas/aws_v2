@@ -2,8 +2,11 @@ import unittest
 from datetime import datetime
 from unittest.mock import patch
 
-from aws_v2.cloudwatch import (MetricStatisticsInput, MetricStatisticsOutput,
-                               get_metric_statistics)
+from aws_v2.cloudwatch import (
+    MetricStatisticsInput,
+    MetricStatisticsOutput,
+    get_metric_statistics,
+)
 
 
 class TestCloudWatch(unittest.TestCase):

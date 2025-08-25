@@ -9,9 +9,12 @@ import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
-from .models.servicecatalog import (ProductSummary, ProvisionedProductOutput,
-                                    ScannedProvisionedProduct,
-                                    SearchedProvisionedProduct)
+from .models.servicecatalog import (
+    ProductSummary,
+    ProvisionedProductOutput,
+    ScannedProvisionedProduct,
+    SearchedProvisionedProduct,
+)
 
 client = session.client("servicecatalog")
 
