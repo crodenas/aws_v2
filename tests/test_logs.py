@@ -1,10 +1,10 @@
 """Unit tests for CloudWatch Logs utility functions."""
 
 import unittest
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
 
-from aws_v2.logs import filter_log_events, FilterLogEventsInput
+from aws_v2.logs import FilterLogEventsInput, filter_log_events
 
 
 class TestLogs(unittest.TestCase):

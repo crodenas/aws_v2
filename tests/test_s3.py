@@ -1,10 +1,10 @@
 """Unit tests for S3 utility functions."""
 
 import unittest
-from unittest.mock import MagicMock, patch
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 
-from aws_v2.s3 import get_object, list_buckets, list_bucket_contents
+from aws_v2.s3 import get_object, list_bucket_contents, list_buckets
 
 
 class TestS3(unittest.TestCase):

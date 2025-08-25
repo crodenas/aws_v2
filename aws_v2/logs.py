@@ -3,9 +3,9 @@ This module provides functionality for interacting with AWS CloudWatch Logs.
 It includes data classes for input and output structures and a function to filter log events.
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import List
-from dataclasses import dataclass
 
 import boto3
 

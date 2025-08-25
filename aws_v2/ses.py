@@ -1,4 +1,10 @@
-"module"
+"""
+This module provides functionality for sending emails using AWS SES (Simple Email Service).
+It includes dataclasses for encapsulating email data and responses, and functions for sending
+both standard and raw emails.
+"""
+
+from dataclasses import dataclass
 
 import boto3
 
@@ -8,24 +14,97 @@ from .exceptions import pivot_exceptions
 client = session.client("ses")
 
 
+@dataclass
+class Email:
+    """
+    Represents the data required to send an email.
+
+    Attributes:
+        source (str): The email address of the sender.
+        destination (dict): The destination details, including To, Cc, and Bcc addresses.
+        message (dict): The content of the email, including Subject, Body, etc.
+    """
+
+    source: str
+    destination: dict
+    message: dict
+
+
+@dataclass
+class EmailResponse:
+    """
+    Represents the response from sending an email.
+
+    Attributes:
+        message_id (str): The unique identifier for the sent email.
+        response_metadata (dict): Metadata about the response, including HTTP status,
+            request ID, etc.
+    """
+
+    message_id: str
+    response_metadata: dict
+
+
+@dataclass
+class RawEmailResponse:
+    """
+    Represents the response from sending a raw email.
+
+    Attributes:
+        message_id (str): The unique identifier for the sent raw email.
+        response_metadata (dict): Metadata about the response, including HTTP status,
+            request ID, etc.
+    """
+
+    message_id: str
+    response_metadata: dict
+
+
 @pivot_exceptions
 def send_email(
-    source: str,
-    destination: dict,
-    message: dict,
+    email: Email,
     ses_client: boto3.client = None,
-) -> str:
-    "function"
+) -> EmailResponse:
+    """
+    Sends an email using AWS SES.
+
+    Args:
+        email (Email): The email data to be sent.
+        ses_client (boto3.client, optional): A custom SES client. Defaults to
+            the module-level client.
+
+    Returns:
+        EmailResponse: The response from the SES service.
+    """
     if ses_client is None:
         ses_client = client
-    return ses_client.send_email(
-        Source=source, Destination=destination, Message=message
+    response = ses_client.send_email(
+        Source=email.source, Destination=email.destination, Message=email.message
+    )
+    return EmailResponse(
+        message_id=response["MessageId"],
+        response_metadata=response["ResponseMetadata"],
     )
 
 
 @pivot_exceptions
-def send_raw_email(raw_message: bytes, ses_client: boto3.client = None) -> dict:
-    "function"
+def send_raw_email(
+    raw_message: bytes, ses_client: boto3.client = None
+) -> RawEmailResponse:
+    """
+    Sends a raw email using AWS SES.
+
+    Args:
+        raw_message (bytes): The raw email data to be sent.
+        ses_client (boto3.client, optional): A custom SES client. Defaults to the
+            module-level client.
+
+    Returns:
+        RawEmailResponse: The response from the SES service.
+    """
     if ses_client is None:
         ses_client = client
-    return ses_client.send_raw_email(RawMessage={"Data": raw_message})
+    response = ses_client.send_raw_email(RawMessage={"Data": raw_message})
+    return RawEmailResponse(
+        message_id=response["MessageId"], response_metadata=response["ResponseMetadata"]
+    )
