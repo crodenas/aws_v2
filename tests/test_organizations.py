@@ -2,6 +2,7 @@
 
 import unittest
 from unittest.mock import MagicMock, patch
+from datetime import datetime
 
 from aws_v2.organizations import list_accounts
 
@@ -26,7 +27,9 @@ class TestOrganizations(unittest.TestCase):
                         "Email": "main@example.com",
                         "Status": "ACTIVE",
                         "JoinedMethod": "CREATED",
-                        "JoinedTimestamp": "2020-01-01T00:00:00Z",
+                        "JoinedTimestamp": datetime.fromisoformat(
+                            "2020-01-01T00:00:00+00:00"
+                        ),
                     },
                     {
                         "Id": "234567890123",
@@ -35,7 +38,9 @@ class TestOrganizations(unittest.TestCase):
                         "Email": "dev@example.com",
                         "Status": "ACTIVE",
                         "JoinedMethod": "INVITED",
-                        "JoinedTimestamp": "2020-02-01T00:00:00Z",
+                        "JoinedTimestamp": datetime.fromisoformat(
+                            "2020-02-01T00:00:00+00:00"
+                        ),
                     },
                 ]
             },
@@ -48,7 +53,9 @@ class TestOrganizations(unittest.TestCase):
                         "Email": "prod@example.com",
                         "Status": "ACTIVE",
                         "JoinedMethod": "INVITED",
-                        "JoinedTimestamp": "2020-03-01T00:00:00Z",
+                        "JoinedTimestamp": datetime.fromisoformat(
+                            "2020-03-01T00:00:00+00:00"
+                        ),
                     }
                 ]
             },
@@ -89,6 +96,7 @@ class TestOrganizations(unittest.TestCase):
         # Set up the default client mock
         mock_paginator = MagicMock()
         mock_default_client.get_paginator.return_value = mock_paginator
+
         mock_paginator.paginate.return_value = [
             {
                 "Accounts": [
@@ -99,44 +107,18 @@ class TestOrganizations(unittest.TestCase):
                         "Email": "main@example.com",
                         "Status": "ACTIVE",
                         "JoinedMethod": "CREATED",
-                        "JoinedTimestamp": "2020-01-01T00:00:00Z",
+                        "JoinedTimestamp": datetime.fromisoformat(
+                            "2020-01-01T00:00:00+00:00"
+                        ),
                     }
                 ]
             }
         ]
-
-        # Call the function without providing a client twice to match the original test logic
-        result1 = list_accounts()
-        result2 = list_accounts()
-
-        # Verify the default client was used twice
-        self.assertEqual(mock_default_client.get_paginator.call_count, 2)
-
-        # Verify the results
-        self.assertEqual(len(result1), 1)
-        self.assertEqual(result1[0].id, "123456789012")
-        self.assertEqual(len(result2), 1)
-        self.assertEqual(result2[0].id, "123456789012")
-        # Set up the default client mock
-        mock_paginator = MagicMock()
-        mock_default_client.get_paginator.return_value = mock_paginator
-        mock_paginator.paginate.return_value = [
-            {
-                "Accounts": [
-                    {
-                        "Id": "123456789012",
-                        "Arn": "arn:aws:organizations::123456789012:account/o-exampleorgid/123456789012",
-                        "Name": "Master Account",
-                        "Email": "main@example.com",
-                        "Status": "ACTIVE",
-                        "JoinedMethod": "CREATED",
-                        "JoinedTimestamp": "2020-01-01T00:00:00Z",
-                    }
-                ]
-            }
-        ]
-
-        # Call the function without providing a client
+        # Call the function and verify results
+        result = list_accounts()
+        self.assertEqual(mock_default_client.get_paginator.call_count, 1)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].id, "123456789012")
 
 
 if __name__ == "__main__":
