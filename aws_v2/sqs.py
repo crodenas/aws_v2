@@ -1,7 +1,7 @@
 """
 This module provides utilities for interacting with AWS SQS (Simple Queue Service).
 It includes functions for extracting the region from an SQS URL and sending messages
-    to an SQS queue.
+to an SQS queue.
 """
 
 from dataclasses import dataclass

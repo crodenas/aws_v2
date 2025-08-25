@@ -1,6 +1,7 @@
 "module"
 
 from dataclasses import dataclass
+from typing import Optional
 
 import boto3
 
@@ -8,6 +9,15 @@ from . import CredentialsObject, session
 from .exceptions import pivot_exceptions
 
 client = session.client("sts")
+
+
+@dataclass
+class CallerIdentityResponse:
+    "Represents the response from get_caller_identity."
+
+    account: str
+    user_id: str
+    arn: str
 
 
 @dataclass
@@ -45,8 +55,13 @@ def assume_role(
 
 
 @pivot_exceptions
-def get_caller_identity(sts_client: boto3.client = None):
-    "function"
+def get_caller_identity(
+    sts_client: Optional[boto3.client] = None,
+) -> CallerIdentityResponse:
+    "Returns the AWS account, user ID, and ARN for the current credentials."
     if sts_client is None:
         sts_client = client
-    return sts_client.get_caller_identity()
+    response = sts_client.get_caller_identity()
+    return CallerIdentityResponse(
+        account=response["Account"], user_id=response["UserId"], arn=response["Arn"]
+    )
