@@ -15,7 +15,7 @@ def get_provisioned_product_outputs(
     provisioned_product_id: str = None,
     provisioned_product_name: str = None,
     servicecatalog_client: boto3.client = None,
-) -> List:
+) -> List[dict]:
     "function"
     results = []
 
@@ -42,7 +42,7 @@ def get_provisioned_product_outputs(
 @pivot_exceptions
 def scan_provisioned_products(
     servicecatalog_client: boto3.client = None,
-) -> List:
+) -> List[dict]:
     "function"
     results = []
 
@@ -59,7 +59,7 @@ def scan_provisioned_products(
 @pivot_exceptions
 def search_products(
     servicecatalog_client: boto3.client = None,
-) -> List:
+) -> List[dict]:
     "function"
     results = []
 
@@ -83,7 +83,7 @@ def search_products(
 @pivot_exceptions
 def search_provisioned_products(
     servicecatalog_client: boto3.client = None,
-) -> List:
+) -> List[dict]:
     "function"
     results = []
 

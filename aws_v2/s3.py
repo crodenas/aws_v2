@@ -69,7 +69,7 @@ def list_buckets(s3_client: boto3.client = None) -> List[Bucket]:
     buckets = []
     for page in response:
         for bucket in page["Buckets"]:
-            buckets.append(Bucket(**bucket))
+            buckets.append(Bucket(bucket["Name"], bucket["CreationDate"]))
     return buckets
 
 
@@ -85,5 +85,5 @@ def list_bucket_contents(
     object_list = []
     for page in response:
         for list_item in page["Contents"]:
-            object_list.append(S3ObjectMetadata(**list_item))
+            object_list.append(S3ObjectMetadata(key=list_item["Key"]))
     return object_list

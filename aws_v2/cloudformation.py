@@ -11,7 +11,6 @@ from .exceptions import pivot_exceptions
 client = session.client("cloudformation")
 
 
-# Data models
 @dataclass
 class StackResponse:
     """Unified data model for stack responses."""
