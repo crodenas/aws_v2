@@ -8,6 +8,11 @@ from datetime import datetime
 
 
 @dataclass
+class BaseModel:
+    """Base model class for all AWS models."""
+
+
+@dataclass
 class CredentialsObject:
     """
     Represents AWS credentials including access keys and session token.
