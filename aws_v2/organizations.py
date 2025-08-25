@@ -6,7 +6,7 @@ import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
-from .models.organizations import Account
+from .models.organizations import Account, Tag
 
 client = session.client("organizations")
 
@@ -56,3 +56,16 @@ def describe_account(
         joined_method=acct["JoinedMethod"],
         joined_timestamp=acct["JoinedTimestamp"],
     )
+
+
+@pivot_exceptions
+def list_tags_for_resource(
+    resource_arn: str, organizations_client: boto3.client = None
+) -> List[Tag]:
+    """List all tags for a given resource."""
+    if organizations_client is None:
+        organizations_client = client
+
+    response = organizations_client.list_tags_for_resource(ResourceARN=resource_arn)
+    tags = response.get("Tags", [])
+    return [Tag(key=tag["Key"], value=tag["Value"]) for tag in tags]

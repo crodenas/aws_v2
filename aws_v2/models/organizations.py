@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+
 from .base import BaseModel
 
 
@@ -17,3 +18,10 @@ class Account(BaseModel):
     status: str
     joined_method: str
     joined_timestamp: datetime
+
+
+# Tag dataclass for resource tagging
+@dataclass
+class Tag:
+    key: str
+    value: str

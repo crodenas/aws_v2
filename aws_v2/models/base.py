@@ -6,6 +6,15 @@ Contains common dataclasses used across multiple AWS services.
 from dataclasses import dataclass
 from datetime import datetime
 
+from dataclasses import dataclass
+from datetime import datetime
+
+
+@dataclass
+class Tag:
+    key: str
+    value: str
+
 
 @dataclass
 class BaseModel:
