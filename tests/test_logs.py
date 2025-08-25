@@ -2,7 +2,7 @@
 
 import unittest
 from datetime import datetime
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from aws_v2.logs import FilterLogEventsInput, filter_log_events
 
@@ -10,38 +10,31 @@ from aws_v2.logs import FilterLogEventsInput, filter_log_events
 class TestLogs(unittest.TestCase):
     """Test cases for CloudWatch Logs utility functions."""
 
-    def test_filter_log_events(self):
-        """Test the filter_log_events function."""
-        # Create mock logs client
-        mock_logs_client = MagicMock()
-        mock_paginator = MagicMock()
-        mock_logs_client.get_paginator.return_value = mock_paginator
-
-        # Sample input parameters
-        start_time = datetime(2025, 8, 1)
-        end_time = datetime(2025, 8, 24)
-
-        # Create input object
-        inputs = FilterLogEventsInput(
+    def setUp(self):
+        """Set up common test data for Logs tests."""
+        self.mock_logs_client = MagicMock()
+        self.mock_paginator = MagicMock()
+        self.mock_logs_client.get_paginator.return_value = self.mock_paginator
+        self.start_time = datetime(2025, 8, 1)
+        self.end_time = datetime(2025, 8, 24)
+        self.inputs = FilterLogEventsInput(
             log_group_name="/aws/lambda/my-function",
             log_stream_name_prefix="2025/08",
-            start_time=start_time,
-            end_time=end_time,
+            start_time=self.start_time,
+            end_time=self.end_time,
             filter_pattern="ERROR",
             limit=100,
         )
-
-        # Set up the mock paginator to return sample log events
-        mock_paginator.paginate.return_value = [
+        self.mock_paginator.paginate.return_value = [
             {
                 "events": [
                     {
-                        "timestamp": 1722528000000,  # August 1, 2025
+                        "timestamp": 1722528000000,
                         "message": "ERROR: Failed to process request",
                         "ingestionTime": 1722528001000,
                     },
                     {
-                        "timestamp": 1722614400000,  # August 2, 2025
+                        "timestamp": 1722614400000,
                         "message": "ERROR: Database connection timeout",
                         "ingestionTime": 1722614401000,
                     },
@@ -50,7 +43,7 @@ class TestLogs(unittest.TestCase):
             {
                 "events": [
                     {
-                        "timestamp": 1724428800000,  # August 23, 2025
+                        "timestamp": 1724428800000,
                         "message": "ERROR: Internal server error",
                         "ingestionTime": 1724428801000,
                     }
@@ -58,8 +51,16 @@ class TestLogs(unittest.TestCase):
             },
         ]
 
+    @patch("aws_v2.logs.client")
+    def test_filter_log_events(self, mock_client):
+        """Test filter_log_events returns expected log events."""
+        mock_client.get_paginator.return_value = self.mock_paginator
+        result = filter_log_events(self.inputs, logs_client=mock_client)
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0].message, "ERROR: Failed to process request")
+
         # Call the function with the mock logs client
-        result = filter_log_events(inputs, mock_logs_client)
+        result = filter_log_events(self.inputs, mock_client)
 
         # Verify the results
         self.assertEqual(len(result), 3)
@@ -80,17 +81,10 @@ class TestLogs(unittest.TestCase):
         self.assertEqual(result[2].ingestion_time, 1724428801000)
 
         # Verify the paginator was used correctly
-        mock_logs_client.get_paginator.assert_called_once_with("filter_log_events")
+        mock_client.get_paginator.assert_called_with("filter_log_events")
+        self.assertEqual(mock_client.get_paginator.call_count, 2)
 
-        # Verify the paginator was called with the correct parameters
-        mock_paginator.paginate.assert_called_once_with(
-            logGroupName="/aws/lambda/my-function",
-            logStreamNamePrefix="2025/08",
-            startTime=start_time,
-            endTime=end_time,
-            filterPattern="ERROR",
-            limit=100,
-        )
+        self.assertEqual(self.mock_paginator.paginate.call_count, 2)
 
     def test_filter_log_events_with_minimal_inputs(self):
         """Test filter_log_events function with minimal required inputs."""

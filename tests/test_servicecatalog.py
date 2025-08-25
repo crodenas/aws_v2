@@ -1,5 +1,7 @@
+"""Unit tests for the servicecatalog module in aws_v2 package."""
+
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from aws_v2.servicecatalog import (ProductSummary, ProvisionedProductOutput,
                                    ScannedProvisionedProduct,
@@ -12,11 +14,9 @@ from aws_v2.servicecatalog import (ProductSummary, ProvisionedProductOutput,
 class TestServiceCatalog(unittest.TestCase):
     """Unit tests for the Service Catalog module."""
 
-    @patch("aws_v2.servicecatalog.client")
-    def test_get_provisioned_product_outputs(self, mock_client):
-        """Test the get_provisioned_product_outputs function."""
-        # Mock response
-        mock_response = {
+    def setUp(self):
+        """Set up common test data for ServiceCatalog tests."""
+        self.mock_response = {
             "ProvisionedProducts": [
                 {
                     "Id": "prod-123",
@@ -27,12 +27,12 @@ class TestServiceCatalog(unittest.TestCase):
                 }
             ]
         }
-        mock_client.scan_provisioned_products.return_value = mock_response
 
-        # Call the function
+    @patch("aws_v2.servicecatalog.client")
+    def test_get_provisioned_product_outputs(self, mock_client):
+        """Test get_provisioned_product_outputs returns expected output."""
+        mock_client.scan_provisioned_products.return_value = self.mock_response
         result = get_provisioned_product_outputs(provisioned_product_id="prod-123")
-
-        # Assertions
         self.assertEqual(len(result), 1)
         self.assertIsInstance(result[0], ProvisionedProductOutput)
         self.assertEqual(result[0].id, "prod-123")

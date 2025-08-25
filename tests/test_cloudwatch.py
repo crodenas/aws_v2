@@ -8,13 +8,9 @@ from aws_v2.cloudwatch import (MetricStatisticsInput, MetricStatisticsOutput,
 
 class TestCloudWatch(unittest.TestCase):
 
-    @patch("aws_v2.cloudwatch.client")
-    def test_get_metric_statistics(self, mock_client):
-        """
-        Test the get_metric_statistics function.
-        """
-        # Mock input data
-        input_data = MetricStatisticsInput(
+    def setUp(self):
+        """Set up common test data for CloudWatch tests."""
+        self.input_data = MetricStatisticsInput(
             namespace="AWS/EC2",
             metric_name="CPUUtilization",
             dimensions=[{"Name": "InstanceId", "Value": "i-1234567890abcdef0"}],
@@ -24,7 +20,9 @@ class TestCloudWatch(unittest.TestCase):
             statistics=["Average"],
         )
 
-        # Mock response
+    @patch("aws_v2.cloudwatch.client")
+    def test_get_metric_statistics(self, mock_client):
+        """Test get_metric_statistics returns expected output."""
         mock_response = {
             "Label": "CPUUtilization",
             "Datapoints": [
@@ -33,24 +31,18 @@ class TestCloudWatch(unittest.TestCase):
             ],
         }
         mock_client.get_metric_statistics.return_value = mock_response
-
-        # Call the function
-        result = get_metric_statistics(input_data, cloudwatch_client=mock_client)
-
-        # Assertions
+        result = get_metric_statistics(self.input_data, cloudwatch_client=mock_client)
         self.assertIsInstance(result, MetricStatisticsOutput)
         self.assertEqual(result.label, "CPUUtilization")
         self.assertEqual(len(result.datapoints), 2)
         self.assertEqual(result.datapoints[0]["Average"], 15.0)
         self.assertEqual(result.datapoints[1]["Average"], 20.0)
-
-        # Verify the call
         mock_client.get_metric_statistics.assert_called_once_with(
             Namespace="AWS/EC2",
             MetricName="CPUUtilization",
             Dimensions=[{"Name": "InstanceId", "Value": "i-1234567890abcdef0"}],
-            StartTime=input_data.start_time,
-            EndTime=input_data.end_time,
+            StartTime=self.input_data.start_time,
+            EndTime=self.input_data.end_time,
             Period=300,
             Statistics=["Average"],
         )

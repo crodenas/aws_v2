@@ -10,34 +10,32 @@ from aws_v2.s3 import get_object, list_bucket_contents, list_buckets
 class TestS3(unittest.TestCase):
     """Test cases for S3 utility functions."""
 
-    def test_get_object(self):
-        """Test the get_object function."""
-        # Create mock S3 client
-        mock_s3 = MagicMock()
-
-        # Create mock response with required fields
-        mock_body = MagicMock()
-        mock_response = {
-            "Body": mock_body,
+    def setUp(self):
+        """Set up common test data for S3 tests."""
+        self.mock_s3 = MagicMock()
+        self.mock_body = MagicMock()
+        self.mock_response = {
+            "Body": self.mock_body,
             "ContentType": "text/plain",
             "ContentLength": 1024,
             "LastModified": datetime(2025, 8, 24, 12, 0, 0),
             "ETag": '"abcdef1234567890"',
         }
-        mock_s3.get_object.return_value = mock_response
+        self.mock_s3.get_object.return_value = self.mock_response
 
-        # Call the function with the mock S3 client
-        result = get_object("test-bucket", "test-key", mock_s3)
-
-        # Verify the results
-        self.assertEqual(result.body, mock_body)
+    @patch("aws_v2.s3.client")
+    def test_get_object(self, mock_client):
+        """Test get_object returns expected object info."""
+        mock_client.get_object.return_value = self.mock_response
+        result = get_object("test-bucket", "test-key", mock_client)
+        self.assertEqual(result.body, self.mock_body)
         self.assertEqual(result.content_type, "text/plain")
         self.assertEqual(result.content_length, 1024)
         self.assertEqual(result.last_modified, datetime(2025, 8, 24, 12, 0, 0))
         self.assertEqual(result.etag, '"abcdef1234567890"')
-
-        # Verify the S3 client was called correctly
-        mock_s3.get_object.assert_called_once_with(Bucket="test-bucket", Key="test-key")
+        mock_client.get_object.assert_called_once_with(
+            Bucket="test-bucket", Key="test-key"
+        )
 
     def test_list_buckets(self):
         """Test the list_buckets function."""

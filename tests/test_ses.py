@@ -1,5 +1,8 @@
+"""Unit tests for the ses module in aws_v2 package."""
+
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+
 import aws_v2.ses as ses
 
 
