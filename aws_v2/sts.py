@@ -1,51 +1,18 @@
 """
 This module provides utilities for interacting with AWS STS (Security Token Service).
-Includes functions and data classes for assuming roles and retrieving caller identity.
+Includes functions for assuming roles and retrieving caller identity.
 """
 
-from dataclasses import dataclass
 from typing import Optional
 
 import boto3
 
 from . import CredentialsObject, session
 from .exceptions import pivot_exceptions
+from .models.sts import (AssumedRoleUserObject, AssumeRoleResponse,
+                         CallerIdentityResponse)
 
 client = session.client("sts")
-
-
-@dataclass
-class CallerIdentityResponse:
-    """
-    Represents the response from get_caller_identity.
-    Contains AWS account, user ID, and ARN.
-    """
-
-    account: str
-    user_id: str
-    arn: str
-
-
-@dataclass
-class AssumedRoleUserObject:
-    """
-    Represents the assumed role user object returned by STS.
-    Contains the assumed role ID and ARN.
-    """
-
-    assumed_role_id: str
-    arn: str
-
-
-@dataclass
-class AssumeRoleResponse:
-    """
-    Represents the response from assume_role.
-    Contains credentials and assumed role user information.
-    """
-
-    credentials: CredentialsObject
-    assumed_role_user: AssumedRoleUserObject
 
 
 @pivot_exceptions

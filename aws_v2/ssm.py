@@ -6,8 +6,6 @@ including retrieving, creating, updating, and deleting parameters. It handles AW
 and provides consistent error handling through the pivot_exceptions decorator.
 """
 
-from dataclasses import dataclass
-from datetime import datetime
 from typing import List
 
 import boto3
@@ -15,6 +13,7 @@ from botocore.config import Config
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.ssm import Parameter
 
 # Maximum retry attempts for AWS SSM client operations. This value was chosen based on AWS SDK's
 # recommendation for standard retry mode, balancing reliability and performance.
@@ -27,33 +26,6 @@ config = Config(
     },
 )
 client = session.client("ssm", config=config)
-
-
-@dataclass
-class Parameter:
-    """Represents an SSM Parameter with its attributes
-
-    Attributes:
-        name: The name/key of the parameter
-        value: The value of the parameter
-        last_modified_date: When the parameter was last modified (optional)
-    """
-
-    name: str
-    value: str
-    last_modified_date: datetime = None
-
-    def to_dict(self):
-        """Convert Parameter to a dictionary for JSON serialization"""
-        result = {
-            "Name": self.name,
-            "Value": self.value,
-        }
-        if self.last_modified_date:
-            result["LastModifiedDate"] = self.last_modified_date.strftime(
-                "%Y-%m-%dT%H:%M:%S"
-            )
-        return result
 
 
 @pivot_exceptions

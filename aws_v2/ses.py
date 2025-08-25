@@ -1,63 +1,15 @@
 """
 This module provides functionality for sending emails using AWS SES (Simple Email Service).
-It includes dataclasses for encapsulating email data and responses, and functions for sending
-both standard and raw emails.
+It includes functions for sending both standard and raw emails.
 """
-
-from dataclasses import dataclass
 
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.ses import Email, EmailResponse, RawEmailResponse
 
 client = session.client("ses")
-
-
-@dataclass
-class Email:
-    """
-    Represents the data required to send an email.
-
-    Attributes:
-        source (str): The email address of the sender.
-        destination (dict): The destination details, including To, Cc, and Bcc addresses.
-        message (dict): The content of the email, including Subject, Body, etc.
-    """
-
-    source: str
-    destination: dict
-    message: dict
-
-
-@dataclass
-class EmailResponse:
-    """
-    Represents the response from sending an email.
-
-    Attributes:
-        message_id (str): The unique identifier for the sent email.
-        response_metadata (dict): Metadata about the response, including HTTP status,
-            request ID, etc.
-    """
-
-    message_id: str
-    response_metadata: dict
-
-
-@dataclass
-class RawEmailResponse:
-    """
-    Represents the response from sending a raw email.
-
-    Attributes:
-        message_id (str): The unique identifier for the sent raw email.
-        response_metadata (dict): Metadata about the response, including HTTP status,
-            request ID, etc.
-    """
-
-    message_id: str
-    response_metadata: dict
 
 
 @pivot_exceptions

@@ -1,23 +1,14 @@
 "module"
 
-from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.cloudformation import StackResponse
 
 client = session.client("cloudformation")
-
-
-@dataclass
-class StackResponse:
-    """Unified data model for stack responses."""
-
-    stack_id: Optional[str] = None
-    stack_name: Optional[str] = None
-    # Add more optional fields as needed
 
 
 @pivot_exceptions

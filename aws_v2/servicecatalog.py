@@ -3,95 +3,17 @@ This module provides functions to interact with AWS Service Catalog, including r
 and searching provisioned products and products.
 """
 
-from dataclasses import dataclass
 from typing import List
 
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.servicecatalog import (ProductSummary, ProvisionedProductOutput,
+                                    ScannedProvisionedProduct,
+                                    SearchedProvisionedProduct)
 
 client = session.client("servicecatalog")
-
-
-@dataclass
-class ProvisionedProductOutput:
-    """
-    Represents the output of a provisioned product.
-
-    Attributes:
-        id (str): The ID of the provisioned product.
-        name (str): The name of the provisioned product.
-        status (str): The status of the provisioned product.
-        type (str): The type of the provisioned product.
-        created_time (str): The creation time of the provisioned product.
-    """
-
-    id: str
-    name: str
-    status: str
-    type: str
-    created_time: str
-
-
-@dataclass
-class ScannedProvisionedProduct:
-    """
-    Represents a scanned provisioned product.
-
-    Attributes:
-        id (str): The ID of the provisioned product.
-        name (str): The name of the provisioned product.
-        status (str): The status of the provisioned product.
-        type (str): The type of the provisioned product.
-        created_time (str): The creation time of the provisioned product.
-    """
-
-    id: str
-    name: str
-    status: str
-    type: str
-    created_time: str
-
-
-@dataclass
-class ProductSummary:
-    """
-    Represents a summary of a product.
-
-    Attributes:
-        id (str): The ID of the product.
-        name (str): The name of the product.
-        owner (str): The owner of the product.
-        product_type (str): The type of the product.
-        short_description (str): A short description of the product.
-    """
-
-    id: str
-    name: str
-    owner: str
-    product_type: str
-    short_description: str
-
-
-@dataclass
-class SearchedProvisionedProduct:
-    """
-    Represents a searched provisioned product.
-
-    Attributes:
-        id (str): The ID of the provisioned product.
-        name (str): The name of the provisioned product.
-        status (str): The status of the provisioned product.
-        type (str): The type of the provisioned product.
-        created_time (str): The creation time of the provisioned product.
-    """
-
-    id: str
-    name: str
-    status: str
-    type: str
-    created_time: str
 
 
 @pivot_exceptions

@@ -1,20 +1,8 @@
 "module"
 
-from dataclasses import dataclass
-from datetime import datetime
-
 import boto3
 
-
-@dataclass
-class CredentialsObject:
-    "class"
-
-    access_key_id: str
-    secret_access_key: str
-    session_token: str
-    expiration: datetime
-
+from .models.base import CredentialsObject
 
 session: boto3.session.Session = boto3.session.Session()
 if session.region_name is None:

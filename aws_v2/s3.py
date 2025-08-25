@@ -1,46 +1,14 @@
 "module"
 
-from dataclasses import dataclass
-from datetime import datetime
 from typing import List
 
 import boto3
-from botocore.response import StreamingBody
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.s3 import Bucket, S3Object, S3ObjectMetadata
 
 client = session.client("s3")
-
-
-@dataclass
-class Bucket:
-    "class"
-
-    name: str
-    creation_date: datetime
-
-
-@dataclass
-class S3Object:
-    "class"
-
-    # Required fields
-    body: StreamingBody
-
-    # Optional fields with defaults
-    content_type: str = None
-    content_length: int = None
-    last_modified: datetime = None
-    etag: str = None
-
-
-@dataclass
-class S3ObjectMetadata:
-    "class"
-
-    # Add more fields as needed
-    key: str
 
 
 @pivot_exceptions

@@ -1,31 +1,17 @@
 """
 This module provides functionality for interacting with AWS Identity Store.
-It includes a dataclass for representing groups and a function for listing groups.
+It includes functionality for listing groups.
 """
 
-from dataclasses import dataclass
 from typing import List
 
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.identitystore import Group
 
 client = session.client("identitystore")
-
-
-@dataclass
-class Group:
-    """
-    Represents a group in the AWS Identity Store.
-
-    Attributes:
-        group_id (str): The unique identifier of the group.
-        display_name (str): The display name of the group.
-    """
-
-    group_id: str
-    display_name: str
 
 
 @pivot_exceptions

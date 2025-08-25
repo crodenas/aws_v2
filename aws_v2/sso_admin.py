@@ -3,26 +3,13 @@ This module provides functionality for interacting with the AWS SSO Admin servic
 It includes methods for creating account assignments and handling exceptions.
 """
 
-from dataclasses import dataclass
-
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.sso_admin import AccountAssignmentCreationStatus
 
 client = session.client("sso-admin")
-
-
-@dataclass
-class AccountAssignmentCreationStatus:
-    """
-    Represents the status of an account assignment creation operation.
-    """
-
-    status: str
-    request_id: str
-    created_date: str
-    failure_reason: str = None
 
 
 @pivot_exceptions

@@ -1,24 +1,14 @@
 """EC2 utility functions for AWS operations."""
 
-from dataclasses import dataclass
 from typing import List
 
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.ec2 import SecurityGroup
 
 client = session.client("ec2")
-
-
-@dataclass
-class SecurityGroup:
-    """Represents an AWS EC2 security group."""
-
-    group_id: str
-    group_name: str
-    description: str
-    vpc_id: str
 
 
 @pivot_exceptions

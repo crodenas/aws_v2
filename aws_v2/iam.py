@@ -1,47 +1,14 @@
 "module"
 
-from dataclasses import dataclass
 from typing import List
 
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.iam import Group, PolicyEntities, Role, User
 
 client = session.client("iam")
-
-
-@dataclass
-class Group:
-    "class"
-
-    group_name: str
-    group_id: str
-
-
-@dataclass
-class User:
-    "class"
-
-    user_name: str
-    user_id: str
-
-
-@dataclass
-class Role:
-    "class"
-
-    role_name: str
-    role_id: str
-
-
-@dataclass
-class PolicyEntities:
-    "class"
-
-    policy_groups: List[Group]
-    policy_users: List[User]
-    policy_roles: List[Role]
 
 
 @pivot_exceptions

@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
-from aws_v2 import sts
-from aws_v2.sts import CallerIdentityResponse, AssumedRoleUserObject, AssumeRoleResponse
-from aws_v2 import CredentialsObject
+
+from aws_v2 import CredentialsObject, sts
+from aws_v2.sts import (AssumedRoleUserObject, AssumeRoleResponse,
+                        CallerIdentityResponse)
 
 
 class TestSTS(unittest.TestCase):
