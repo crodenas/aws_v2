@@ -7,10 +7,9 @@ including operations like scanning tables, querying data, etc.
 
 import boto3
 
-from aws_v2.exceptions import pivot_exceptions
-from aws_v2.models.dynamodb import DynamoDBScanOutput
-
 from . import session
+from .exceptions import pivot_exceptions
+from .models.dynamodb import DynamoDBScanOutput
 
 client = session.client("dynamodb")
 
