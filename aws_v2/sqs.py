@@ -4,12 +4,11 @@ It includes functions for extracting the region from an SQS URL and sending mess
 to an SQS queue.
 """
 
-from dataclasses import dataclass
-
 import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
+from .models.sqs import SQSMessageResponse
 
 client = session.client("sqs")
 
@@ -25,20 +24,6 @@ def get_region_from_url(url: str) -> str:
         str: The AWS region extracted from the URL.
     """
     return url.split(".")[1]
-
-
-@dataclass
-class SQSMessageResponse:
-    """
-    Represents the response of an SQS send_message operation.
-
-    Attributes:
-        message_id (str): The ID of the sent message.
-        md5_of_message_body (str): The MD5 checksum of the message body.
-    """
-
-    message_id: str
-    md5_of_message_body: str
 
 
 @pivot_exceptions
