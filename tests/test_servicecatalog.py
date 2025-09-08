@@ -3,16 +3,12 @@
 import unittest
 from unittest.mock import patch
 
-from aws_v2.servicecatalog import (
-    ProductSummary,
-    ProvisionedProductOutput,
-    ScannedProvisionedProduct,
-    SearchedProvisionedProduct,
-    get_provisioned_product_outputs,
-    scan_provisioned_products,
-    search_products,
-    search_provisioned_products,
-)
+from aws_v2.servicecatalog import (ProductSummary, ProvisionedProductOutput,
+                                   ScannedProvisionedProduct,
+                                   SearchedProvisionedProduct,
+                                   get_provisioned_product_outputs,
+                                   scan_provisioned_products, search_products,
+                                   search_provisioned_products)
 
 
 class TestServiceCatalog(unittest.TestCase):

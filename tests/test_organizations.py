@@ -1,8 +1,8 @@
 """Unit tests for Organizations utility functions."""
 
 import unittest
-from unittest.mock import MagicMock, patch
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 
 from aws_v2.organizations import list_accounts
 
