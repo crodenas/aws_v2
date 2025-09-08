@@ -47,15 +47,21 @@ def describe_stacks(
     if cloudformation_client is None:
         cloudformation_client = client
 
-    results = []
+    params = {}
+    if stack_name:
+        params["StackName"] = stack_name
 
+    results = []
     paginator = cloudformation_client.get_paginator("describe_stacks")
-    for page in paginator.paginate(StackName=stack_name):
+    for page in paginator.paginate(**params):
         for stack in page["Stacks"]:
             results.append(
                 StackResponse(
                     stack_id=stack.get("StackId"),
                     stack_name=stack.get("StackName"),
+                    description=stack.get("Description"),
+                    parameters=stack.get("Parameters"),
+                    outputs=stack.get("Outputs"),
                 )
             )
 
