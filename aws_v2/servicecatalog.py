@@ -9,9 +9,12 @@ import boto3
 
 from . import session
 from .exceptions import pivot_exceptions
-from .models.servicecatalog import (ProductSummary, ProvisionedProductOutput,
-                                    ScannedProvisionedProduct,
-                                    SearchedProvisionedProduct)
+from .models.servicecatalog import (
+    ProductSummary,
+    ProvisionedProductOutput,
+    ScannedProvisionedProduct,
+    SearchedProvisionedProduct,
+)
 
 client = session.client("servicecatalog")
 
@@ -82,7 +85,9 @@ def scan_provisioned_products(
     if servicecatalog_client is None:
         servicecatalog_client = client
 
-    paginator = servicecatalog_client.get_paginator("scan_provisioned_products")
+    paginator = servicecatalog_client.get_paginator(
+        "scan_provisioned_products"
+    )
     for page in paginator.paginate():
         for product in page["ProvisionedProducts"]:
             results.append(

@@ -14,7 +14,9 @@ class TestOrganizations(unittest.TestCase):
         """Set up common test data for Organizations tests."""
         self.mock_organizations = MagicMock()
         self.mock_paginator = MagicMock()
-        self.mock_organizations.get_paginator.return_value = self.mock_paginator
+        self.mock_organizations.get_paginator.return_value = (
+            self.mock_paginator
+        )
 
         # Mock the paginate response with two pages
         self.mock_paginator.paginate.return_value = [
@@ -67,7 +69,9 @@ class TestOrganizations(unittest.TestCase):
         result = list_accounts(self.mock_organizations)
 
         # Verify the paginator was called correctly
-        self.mock_organizations.get_paginator.assert_called_once_with("list_accounts")
+        self.mock_organizations.get_paginator.assert_called_once_with(
+            "list_accounts"
+        )
         self.mock_paginator.paginate.assert_called_once()
 
         # Verify the result contains all accounts from all pages

@@ -4,7 +4,6 @@ Contains dataclasses for responses from STS API calls.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from . import base
 

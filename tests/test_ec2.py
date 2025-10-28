@@ -58,11 +58,15 @@ class TestEC2(unittest.TestCase):
 
         self.assertEqual(result[2].group_id, "sg-abcde")
         self.assertEqual(result[2].group_name, "db-servers")
-        self.assertEqual(result[2].description, "Security group for database servers")
+        self.assertEqual(
+            result[2].description, "Security group for database servers"
+        )
         self.assertEqual(result[2].vpc_id, "vpc-67890")
 
         # Verify the paginator was used correctly
-        mock_client.get_paginator.assert_called_once_with("describe_security_groups")
+        mock_client.get_paginator.assert_called_once_with(
+            "describe_security_groups"
+        )
         self.mock_paginator.paginate.assert_called_once()
 
 

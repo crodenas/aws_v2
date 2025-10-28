@@ -3,12 +3,16 @@
 import unittest
 from unittest.mock import patch
 
-from aws_v2.servicecatalog import (ProductSummary, ProvisionedProductOutput,
-                                   ScannedProvisionedProduct,
-                                   SearchedProvisionedProduct,
-                                   get_provisioned_product_outputs,
-                                   scan_provisioned_products, search_products,
-                                   search_provisioned_products)
+from aws_v2.servicecatalog import (
+    ProductSummary,
+    ProvisionedProductOutput,
+    ScannedProvisionedProduct,
+    SearchedProvisionedProduct,
+    get_provisioned_product_outputs,
+    scan_provisioned_products,
+    search_products,
+    search_provisioned_products,
+)
 
 
 class TestServiceCatalog(unittest.TestCase):
@@ -32,7 +36,9 @@ class TestServiceCatalog(unittest.TestCase):
     def test_get_provisioned_product_outputs(self, mock_client):
         """Test get_provisioned_product_outputs returns expected output."""
         mock_client.scan_provisioned_products.return_value = self.mock_response
-        result = get_provisioned_product_outputs(provisioned_product_id="prod-123")
+        result = get_provisioned_product_outputs(
+            provisioned_product_id="prod-123"
+        )
         self.assertEqual(len(result), 1)
         self.assertIsInstance(result[0], ProvisionedProductOutput)
         self.assertEqual(result[0].id, "prod-123")
@@ -54,7 +60,9 @@ class TestServiceCatalog(unittest.TestCase):
                 }
             ]
         }
-        mock_client.get_paginator.return_value.paginate.return_value = [mock_response]
+        mock_client.get_paginator.return_value.paginate.return_value = [
+            mock_response
+        ]
 
         # Call the function
         result = scan_provisioned_products()

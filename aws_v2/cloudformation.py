@@ -1,6 +1,6 @@
 "module"
 
-from typing import List
+from typing import Dict, List
 
 import boto3
 
@@ -15,8 +15,8 @@ client = session.client("cloudformation")
 def create_stack(
     stack_name: str,
     template_url: str,
-    parameters: List,
-    capabilities: List,
+    parameters: List[Dict[str, str]],
+    capabilities: List[str],
     cloudformation_client: boto3.client = None,
 ) -> StackResponse:
     "function"

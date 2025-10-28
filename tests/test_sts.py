@@ -1,9 +1,12 @@
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from aws_v2 import CredentialsObject, sts
-from aws_v2.sts import (AssumedRoleUserObject, AssumeRoleResponse,
-                        CallerIdentityResponse)
+from aws_v2.sts import (
+    AssumedRoleUserObject,
+    AssumeRoleResponse,
+    CallerIdentityResponse,
+)
 
 
 class TestSTS(unittest.TestCase):
@@ -47,7 +50,8 @@ class TestSTS(unittest.TestCase):
             ),
         ):
             result = sts.assume_role(
-                "arn:aws:iam::123456789012:role/example-role", sts_client=mock_client
+                "arn:aws:iam::123456789012:role/example-role",
+                sts_client=mock_client,
             )
         self.assertIsInstance(result, AssumeRoleResponse)
         self.assertIsInstance(result.credentials, CredentialsObject)

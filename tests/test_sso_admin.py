@@ -3,8 +3,10 @@
 import unittest
 from unittest.mock import patch
 
-from aws_v2.sso_admin import (AccountAssignmentCreationStatus,
-                              create_account_assignment)
+from aws_v2.sso_admin import (
+    AccountAssignmentCreationStatus,
+    create_account_assignment,
+)
 
 
 class TestSSOAdmin(unittest.TestCase):

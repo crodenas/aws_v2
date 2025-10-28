@@ -19,7 +19,9 @@ class TestIdentityStore(unittest.TestCase):
             {"GroupId": "group2", "DisplayName": "Group 2"},
         ]
         self.mock_paginator = MagicMock()
-        self.mock_paginator.paginate.return_value = [{"Groups": self.mock_groups}]
+        self.mock_paginator.paginate.return_value = [
+            {"Groups": self.mock_groups}
+        ]
 
     @patch("aws_v2.identitystore.client")
     def test_list_groups(self, mock_client):
@@ -29,8 +31,12 @@ class TestIdentityStore(unittest.TestCase):
             self.mock_identitystore_id, identitystore_client=mock_client
         )
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[0], Group(group_id="group1", display_name="Group 1"))
-        self.assertEqual(result[1], Group(group_id="group2", display_name="Group 2"))
+        self.assertEqual(
+            result[0], Group(group_id="group1", display_name="Group 1")
+        )
+        self.assertEqual(
+            result[1], Group(group_id="group2", display_name="Group 2")
+        )
 
 
 if __name__ == "__main__":

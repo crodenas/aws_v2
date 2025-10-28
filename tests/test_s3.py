@@ -74,11 +74,17 @@ class TestS3(unittest.TestCase):
         # Verify the results
         self.assertEqual(len(result), 3)
         self.assertEqual(result[0].name, "test-bucket-1")
-        self.assertEqual(result[0].creation_date, datetime(2025, 1, 1, 12, 0, 0))
+        self.assertEqual(
+            result[0].creation_date, datetime(2025, 1, 1, 12, 0, 0)
+        )
         self.assertEqual(result[1].name, "test-bucket-2")
-        self.assertEqual(result[1].creation_date, datetime(2025, 2, 2, 12, 0, 0))
+        self.assertEqual(
+            result[1].creation_date, datetime(2025, 2, 2, 12, 0, 0)
+        )
         self.assertEqual(result[2].name, "test-bucket-3")
-        self.assertEqual(result[2].creation_date, datetime(2025, 3, 3, 12, 0, 0))
+        self.assertEqual(
+            result[2].creation_date, datetime(2025, 3, 3, 12, 0, 0)
+        )
 
         # Verify the paginator was used correctly
         mock_s3.get_paginator.assert_called_once_with("list_buckets")
@@ -164,7 +170,9 @@ class TestS3(unittest.TestCase):
         # Verify the results
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].name, "test-bucket-1")
-        self.assertEqual(result[0].creation_date, datetime(2025, 1, 1, 12, 0, 0))
+        self.assertEqual(
+            result[0].creation_date, datetime(2025, 1, 1, 12, 0, 0)
+        )
 
         # Verify the paginator was used correctly
         mock_client.get_paginator.assert_called_once_with("list_buckets")

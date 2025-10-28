@@ -72,7 +72,9 @@ class TestLogs(unittest.TestCase):
 
         # Verify second log event
         self.assertEqual(result[1].timestamp, 1722614400000)
-        self.assertEqual(result[1].message, "ERROR: Database connection timeout")
+        self.assertEqual(
+            result[1].message, "ERROR: Database connection timeout"
+        )
         self.assertEqual(result[1].ingestion_time, 1722614401000)
 
         # Verify third log event

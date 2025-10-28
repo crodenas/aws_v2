@@ -66,6 +66,8 @@ def list_tags_for_resource(
     if organizations_client is None:
         organizations_client = client
 
-    response = organizations_client.list_tags_for_resource(ResourceARN=resource_arn)
+    response = organizations_client.list_tags_for_resource(
+        ResourceARN=resource_arn
+    )
     tags = response.get("Tags", [])
     return [Tag(key=tag["Key"], value=tag["Value"]) for tag in tags]

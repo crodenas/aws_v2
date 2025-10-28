@@ -31,7 +31,9 @@ def send_email(
     if ses_client is None:
         ses_client = client
     response = ses_client.send_email(
-        Source=email.source, Destination=email.destination, Message=email.message
+        Source=email.source,
+        Destination=email.destination,
+        Message=email.message,
     )
     return EmailResponse(
         message_id=response["MessageId"],
@@ -58,5 +60,6 @@ def send_raw_email(
         ses_client = client
     response = ses_client.send_raw_email(RawMessage={"Data": raw_message})
     return RawEmailResponse(
-        message_id=response["MessageId"], response_metadata=response["ResponseMetadata"]
+        message_id=response["MessageId"],
+        response_metadata=response["ResponseMetadata"],
     )

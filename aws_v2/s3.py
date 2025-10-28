@@ -12,7 +12,9 @@ client = session.client("s3")
 
 
 @pivot_exceptions
-def get_object(bucket_name: str, key: str, s3_client: boto3.client = None) -> S3Object:
+def get_object(
+    bucket_name: str, key: str, s3_client: boto3.client = None
+) -> S3Object:
     "function"
     if s3_client is None:
         s3_client = client
@@ -29,6 +31,7 @@ def get_object(bucket_name: str, key: str, s3_client: boto3.client = None) -> S3
 
 @pivot_exceptions
 def list_buckets(s3_client: boto3.client = None) -> List[Bucket]:
+    "function"
     if s3_client is None:
         s3_client = client
 
@@ -39,7 +42,9 @@ def list_buckets(s3_client: boto3.client = None) -> List[Bucket]:
     for page in response:
         for bucket in page["Buckets"]:
             result.append(
-                Bucket(name=bucket["Name"], creation_date=bucket["CreationDate"])
+                Bucket(
+                    name=bucket["Name"], creation_date=bucket["CreationDate"]
+                )
             )
     return result
 
@@ -54,10 +59,7 @@ def list_bucket_contents(
     pager = s3_client.get_paginator("list_objects_v2")
     response = pager.paginate(Bucket=bucket_name)
     object_list = []
-    try:
-        for page in response:
-            for list_item in page["Contents"]:
-                object_list.append(S3ObjectMetadata(key=list_item["Key"]))
-        return object_list
-    except KeyError:
-        print("here")
+    for page in response:
+        for list_item in page["Contents"]:
+            object_list.append(S3ObjectMetadata(key=list_item["Key"]))
+    return object_list

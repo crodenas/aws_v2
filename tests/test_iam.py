@@ -1,8 +1,13 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from aws_v2.iam import (Group, PolicyEntities, Role, User,
-                        list_entities_for_policy)
+from aws_v2.iam import (
+    Group,
+    PolicyEntities,
+    Role,
+    User,
+    list_entities_for_policy,
+)
 
 
 class TestIAM(unittest.TestCase):
@@ -38,13 +43,16 @@ class TestIAM(unittest.TestCase):
     def test_list_entities_for_policy(self, mock_client):
         """Test list_entities_for_policy returns expected entities."""
         mock_client.get_paginator.return_value = self.mock_paginator
-        result = list_entities_for_policy(self.mock_policy_arn, iam_client=mock_client)
+        result = list_entities_for_policy(
+            self.mock_policy_arn, iam_client=mock_client
+        )
         self.assertIsInstance(result, PolicyEntities)
         self.assertEqual(len(result.policy_groups), 2)
         self.assertEqual(len(result.policy_users), 2)
         self.assertEqual(len(result.policy_roles), 2)
         self.assertEqual(
-            result.policy_groups[0], Group(group_name="Group1", group_id="group1-id")
+            result.policy_groups[0],
+            Group(group_name="Group1", group_id="group1-id"),
         )
         self.assertEqual(
             result.policy_users[0], User(user_name="User1", user_id="user1-id")

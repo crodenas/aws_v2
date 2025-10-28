@@ -9,8 +9,11 @@ import boto3
 
 from . import CredentialsObject, session
 from .exceptions import pivot_exceptions
-from .models.sts import (AssumedRoleUserObject, AssumeRoleResponse,
-                         CallerIdentityResponse)
+from .models.sts import (
+    AssumedRoleUserObject,
+    AssumeRoleResponse,
+    CallerIdentityResponse,
+)
 
 client = session.client("sts")
 
@@ -35,7 +38,9 @@ def assume_role(
     if region_name is None:
         region_name = sts_client.meta.region_name
 
-    response = sts_client.assume_role(RoleArn=role_arn, RoleSessionName="pivot-session")
+    response = sts_client.assume_role(
+        RoleArn=role_arn, RoleSessionName="pivot-session"
+    )
 
     return AssumeRoleResponse(
         credentials=CredentialsObject(**response["Credentials"]),
@@ -63,5 +68,7 @@ def get_caller_identity(
         sts_client = client
     response = sts_client.get_caller_identity()
     return CallerIdentityResponse(
-        account=response["Account"], user_id=response["UserId"], arn=response["Arn"]
+        account=response["Account"],
+        user_id=response["UserId"],
+        arn=response["Arn"],
     )

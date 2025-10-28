@@ -43,7 +43,9 @@ def send_message(
     """
     if sqs_client is None:
         sqs_client = client
-    response = sqs_client.send_message(QueueUrl=queue_url, MessageBody=message_body)
+    response = sqs_client.send_message(
+        QueueUrl=queue_url, MessageBody=message_body
+    )
     return SQSMessageResponse(
         message_id=response["MessageId"],
         md5_of_message_body=response["MD5OfMessageBody"],

@@ -12,7 +12,9 @@ client = session.client("ec2")
 
 
 @pivot_exceptions
-def describe_security_groups(ec2_client: boto3.client = None) -> List[SecurityGroup]:
+def describe_security_groups(
+    ec2_client: boto3.client = None,
+) -> List[SecurityGroup]:
     """Retrieve all EC2 security groups using pagination."""
     if ec2_client is None:
         ec2_client = client

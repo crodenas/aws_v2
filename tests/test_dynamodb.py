@@ -16,12 +16,23 @@ class TestDynamoDB(unittest.TestCase):
         # Mock response for a scan with no filter
         self.mock_scan_response = {
             "Items": [
-                {"id": {"S": "1"}, "name": {"S": "Item 1"}, "active": {"BOOL": True}},
-                {"id": {"S": "2"}, "name": {"S": "Item 2"}, "active": {"BOOL": False}},
+                {
+                    "id": {"S": "1"},
+                    "name": {"S": "Item 1"},
+                    "active": {"BOOL": True},
+                },
+                {
+                    "id": {"S": "2"},
+                    "name": {"S": "Item 2"},
+                    "active": {"BOOL": False},
+                },
             ],
             "Count": 2,
             "ScannedCount": 2,
-            "ConsumedCapacity": {"TableName": "test-table", "CapacityUnits": 0.5},
+            "ConsumedCapacity": {
+                "TableName": "test-table",
+                "CapacityUnits": 0.5,
+            },
         }
         # Mock response for when pagination is needed
         self.mock_paginated_responses = [
@@ -47,7 +58,10 @@ class TestDynamoDB(unittest.TestCase):
                 ],
                 "Count": 1,
                 "ScannedCount": 1,
-                "ConsumedCapacity": {"TableName": "test-table", "CapacityUnits": 0.5},
+                "ConsumedCapacity": {
+                    "TableName": "test-table",
+                    "CapacityUnits": 0.5,
+                },
             },
         ]
 
@@ -66,7 +80,8 @@ class TestDynamoDB(unittest.TestCase):
         self.assertEqual(result.count, 2)
         self.assertEqual(result.scanned_count, 2)
         self.assertEqual(
-            result.consumed_capacity, self.mock_scan_response["ConsumedCapacity"]
+            result.consumed_capacity,
+            self.mock_scan_response["ConsumedCapacity"],
         )
         self.assertIsNone(result.last_evaluated_key)
 
@@ -112,7 +127,9 @@ class TestDynamoDB(unittest.TestCase):
 
         # Verify results
         self.assertIsInstance(result, DynamoDBScanOutput)
-        self.assertEqual(len(result.items), 2)  # Combined items from both pages
+        self.assertEqual(
+            len(result.items), 2
+        )  # Combined items from both pages
         self.assertEqual(result.count, 2)  # Sum of counts from both pages
         self.assertEqual(
             result.scanned_count, 2
@@ -123,7 +140,9 @@ class TestDynamoDB(unittest.TestCase):
         mock_client.scan.assert_any_call(TableName="test-table")
         mock_client.scan.assert_any_call(
             TableName="test-table",
-            ExclusiveStartKey=self.mock_paginated_responses[0]["LastEvaluatedKey"],
+            ExclusiveStartKey=self.mock_paginated_responses[0][
+                "LastEvaluatedKey"
+            ],
         )
 
     def test_scan_with_custom_client(self):

@@ -6,13 +6,17 @@ from botocore import waiter
 from . import get_session, sts
 
 
-def assume_role(role_arn: str, region_name: str = None) -> boto3.session.Session:
+def assume_role(
+    role_arn: str, region_name: str = None
+) -> boto3.session.Session:
     "function"
     if region_name is None:
         region_name = sts.session.region_name
 
     assume_role_response = sts.assume_role(role_arn=role_arn)
-    return get_session(assume_role_response.credentials, region_name=region_name)
+    return get_session(
+        assume_role_response.credentials, region_name=region_name
+    )
 
 
 def get_client_with_role(

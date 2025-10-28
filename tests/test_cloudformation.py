@@ -52,7 +52,9 @@ class TestCloudFormation(unittest.TestCase):
                 }
             ]
         }
-        mock_client.get_paginator.return_value.paginate.return_value = [mock_response]
+        mock_client.get_paginator.return_value.paginate.return_value = [
+            mock_response
+        ]
         response = describe_stacks(self.stack_name, mock_client)
         self.assertEqual(len(response), 1)
         self.assertEqual(response[0].stack_id, "test-stack-id")
@@ -72,7 +74,9 @@ class TestCloudFormation(unittest.TestCase):
                 }
             ]
         }
-        mock_client.get_paginator.return_value.paginate.return_value = [mock_response]
+        mock_client.get_paginator.return_value.paginate.return_value = [
+            mock_response
+        ]
         response = list_stacks("CREATE_COMPLETE", mock_client)
         self.assertEqual(len(response), 1)
         self.assertEqual(response[0].stack_id, "test-stack-id")
