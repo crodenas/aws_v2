@@ -78,5 +78,130 @@ s3_client = new_session.client("s3")
 - **Region Handling**: Functions default to client's region if not specified
 - **Data Models**: Use dataclasses with proper type hints, optional fields default to `None`
 - **Imports**: Relative imports within the package, absolute for external dependencies
-- **Documentation**: Module-level docstrings and function docstrings with Args/Returns sections</content>
+- **Documentation**: Module-level docstrings and function docstrings with Args/Returns sections
+
+## Testing Patterns
+
+### Test Structure
+Each test file should follow this pattern:
+```python
+import unittest
+from unittest.mock import MagicMock, patch
+
+from aws_v2.{service} import function_to_test
+
+class Test{Service}(unittest.TestCase):
+    def setUp(self):
+        """Set up common test data."""
+        self.mock_client = MagicMock()
+        # Setup mock responses
+    
+    @patch("aws_v2.{service}.client")
+    def test_function_name(self, mock_client):
+        """Test function returns expected result."""
+        mock_client.api_call.return_value = {"Key": "Value"}
+        result = function_to_test(param="value")
+        self.assertEqual(result.key, "Value")
+```
+
+### Mocking Guidelines
+- Mock boto3 clients using `@patch("aws_v2.{service}.client")`
+- Use `MagicMock()` for custom client instances
+- Mock paginators when testing list operations with pagination
+- Always test both success and error cases
+
+## Security Considerations
+
+- **Credentials Management**: Never hardcode AWS credentials. Always use boto3 session/environment variables
+- **Role ARNs**: Validate role ARN format before passing to assume_role functions
+- **Session Tokens**: Temporary credentials from `assume_role` include session tokens that expire
+- **Error Messages**: The `AwsError` exception may include sensitive information from boto3 exceptions. Handle carefully in logs
+- **Client Injection**: The optional `{service}_client` parameter allows custom sessions but should only accept trusted client instances
+
+## Common Pitfalls
+
+### Region Configuration
+❌ **Wrong**: Assuming default region is set
+```python
+# This may fail if AWS_REGION is not configured
+client = session.client("s3")
+```
+
+✅ **Correct**: Handle region explicitly or check session region
+```python
+# Use region_name parameter or verify session.region_name exists
+if session.region_name is None:
+    session = boto3.session.Session(region_name="us-east-2")
+```
+
+### Exception Handling
+❌ **Wrong**: Catching specific boto3 exceptions
+```python
+try:
+    result = s3.list_buckets()
+except ClientError as e:  # Won't catch - exceptions are transformed
+    handle_error(e)
+```
+
+✅ **Correct**: Catch AwsError instead
+```python
+from aws_v2.exceptions import AwsError
+
+try:
+    result = s3.list_buckets()
+except AwsError as e:
+    handle_error(e)
+```
+
+### Client Parameter Pattern
+❌ **Wrong**: Not defaulting to module client
+```python
+def my_function(param: str, s3_client: boto3.client) -> Response:
+    # Forces caller to always provide client
+    return s3_client.get_object(Bucket=param)
+```
+
+✅ **Correct**: Default to module-level client
+```python
+def my_function(param: str, s3_client: boto3.client = None) -> Response:
+    if s3_client is None:
+        s3_client = client  # Use module-level client
+    return s3_client.get_object(Bucket=param)
+```
+
+### Role Chaining
+❌ **Wrong**: Creating new sessions without using wrapper utilities
+```python
+# Bypasses exception handling and role chaining utilities
+response = boto3.client("sts").assume_role(RoleArn=role_arn)
+credentials = response["Credentials"]
+new_session = boto3.Session(
+    aws_access_key_id=credentials["AccessKeyId"],
+    # ... manual credential mapping
+)
+```
+
+✅ **Correct**: Use provided utilities
+```python
+from aws_v2 import sts, get_session
+
+# Uses proper exception handling and credential mapping
+response = sts.assume_role(role_arn=role_arn)
+new_session = get_session(response.credentials, region_name="us-west-2")
+```
+
+## Adding New Service Modules
+
+When adding support for a new AWS service:
+
+1. **Create service module**: `aws_v2/{service}.py`
+2. **Define models**: Add response dataclasses in `aws_v2/models/{service}.py`
+3. **Follow the pattern**:
+   - Import required dependencies
+   - Create module-level client: `client = session.client("{service}")`
+   - Decorate all functions with `@pivot_exceptions`
+   - Accept optional `{service}_client` parameter
+   - Return dataclass instances, not raw boto3 responses
+4. **Add tests**: Create `tests/test_{service}.py` with unittest cases
+5. **Update documentation**: Add service to README.md service list
 <parameter name="filePath">/Users/rodenas/repos/aws_v2/.github/copilot-instructions.md
