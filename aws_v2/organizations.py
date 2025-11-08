@@ -1,6 +1,12 @@
-"module"
+"""
+AWS Organizations service module.
 
-from typing import List
+This module provides functions for interacting with AWS Organizations,
+including operations for describing accounts, listing accounts, and
+managing resource tags.
+"""
+
+from typing import List, Optional
 
 import boto3
 
@@ -13,9 +19,19 @@ client = session.client("organizations")
 
 @pivot_exceptions
 def describe_account(
-    account_id: str, organizations_client: boto3.client = None
+    account_id: str, organizations_client: Optional[boto3.client] = None
 ) -> Account:
-    """Describe an AWS account by its ID."""
+    """
+    Describe an AWS account by its ID.
+
+    Args:
+        account_id: The AWS account ID to describe.
+        organizations_client: Custom Organizations client. Defaults to
+            module client.
+
+    Returns:
+        An Account object containing account details.
+    """
     if organizations_client is None:
         organizations_client = client
 
@@ -33,8 +49,19 @@ def describe_account(
 
 
 @pivot_exceptions
-def list_accounts(organizations_client: boto3.client = None) -> List[Account]:
-    """List all AWS accounts using pagination."""
+def list_accounts(
+    organizations_client: Optional[boto3.client] = None,
+) -> List[Account]:
+    """
+    List all AWS accounts using pagination.
+
+    Args:
+        organizations_client: Custom Organizations client. Defaults to
+            module client.
+
+    Returns:
+        A list of Account objects for all accounts in the organization.
+    """
     if organizations_client is None:
         organizations_client = client
 
@@ -60,9 +87,19 @@ def list_accounts(organizations_client: boto3.client = None) -> List[Account]:
 
 @pivot_exceptions
 def list_tags_for_resource(
-    resource_arn: str, organizations_client: boto3.client = None
+    resource_arn: str, organizations_client: Optional[boto3.client] = None
 ) -> List[Tag]:
-    """List all tags for a given resource."""
+    """
+    List all tags for a given resource.
+
+    Args:
+        resource_arn: The ARN of the resource to list tags for.
+        organizations_client: Custom Organizations client. Defaults to
+            module client.
+
+    Returns:
+        A list of Tag objects containing key-value pairs.
+    """
     if organizations_client is None:
         organizations_client = client
 

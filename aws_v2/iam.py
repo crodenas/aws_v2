@@ -1,4 +1,12 @@
-"module"
+"""
+AWS IAM service module.
+
+This module provides functions for interacting with AWS IAM (Identity and
+Access Management), including operations for listing entities attached to
+policies.
+"""
+
+from typing import Optional
 
 import boto3
 
@@ -12,12 +20,25 @@ client = session.client("iam")
 @pivot_exceptions
 def list_entities_for_policy(
     policy_arn: str,
-    entity_filter: str = None,
-    path_prefix: str = None,
-    policy_usage_filter: str = None,
-    iam_client: boto3.client = None,
+    entity_filter: Optional[str] = None,
+    path_prefix: Optional[str] = None,
+    policy_usage_filter: Optional[str] = None,
+    iam_client: Optional[boto3.client] = None,
 ) -> PolicyEntities:
-    "function"
+    """
+    List all IAM entities (users, groups, roles) attached to a policy.
+
+    Args:
+        policy_arn: The ARN of the policy to query.
+        entity_filter: Filter results by entity type. Defaults to None.
+        path_prefix: Filter results by path prefix. Defaults to None.
+        policy_usage_filter: Filter by policy usage. Defaults to None.
+        iam_client: Custom IAM client. Defaults to module client.
+
+    Returns:
+        PolicyEntities object containing lists of groups, users, and
+        roles attached to the policy.
+    """
     if iam_client is None:
         iam_client = client
 
@@ -39,7 +60,9 @@ def list_entities_for_policy(
 
     return PolicyEntities(
         policy_groups=[
-            Group(group_name=group["GroupName"], group_id=group["GroupId"])
+            Group(
+                group_name=group["GroupName"], group_id=group["GroupId"]
+            )
             for group in results.get("PolicyGroups", [])
         ],
         policy_users=[
