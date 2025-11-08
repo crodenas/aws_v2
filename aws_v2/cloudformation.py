@@ -1,6 +1,12 @@
-"module"
+"""
+AWS CloudFormation service module.
 
-from typing import Dict, List
+This module provides functions for interacting with AWS CloudFormation,
+including operations for creating stacks, describing stacks, and listing
+stacks with various filters.
+"""
+
+from typing import Dict, List, Optional
 
 import boto3
 
@@ -17,10 +23,22 @@ def create_stack(
     template_url: str,
     parameters: List[Dict[str, str]],
     capabilities: List[str],
-    cloudformation_client: boto3.client = None,
+    cloudformation_client: Optional[boto3.client] = None,
 ) -> StackResponse:
-    "function"
+    """
+    Create a new CloudFormation stack.
 
+    Args:
+        stack_name: The name for the new stack.
+        template_url: The URL of the template to use for stack creation.
+        parameters: A list of parameter dictionaries for the stack.
+        capabilities: A list of capabilities required for the stack.
+        cloudformation_client: Custom CloudFormation client. Defaults to
+            module client.
+
+    Returns:
+        A StackResponse object containing the stack ID and name.
+    """
     if cloudformation_client is None:
         cloudformation_client = client
 
@@ -39,11 +57,21 @@ def create_stack(
 
 @pivot_exceptions
 def describe_stacks(
-    stack_name: str = None,
-    cloudformation_client: boto3.client = None,
+    stack_name: Optional[str] = None,
+    cloudformation_client: Optional[boto3.client] = None,
 ) -> List[StackResponse]:
-    "function"
+    """
+    Describe CloudFormation stacks.
 
+    Args:
+        stack_name: Optional name of a specific stack to describe.
+            If None, describes all stacks.
+        cloudformation_client: Custom CloudFormation client. Defaults to
+            module client.
+
+    Returns:
+        A list of StackResponse objects containing stack details.
+    """
     if cloudformation_client is None:
         cloudformation_client = client
 
@@ -70,11 +98,21 @@ def describe_stacks(
 
 @pivot_exceptions
 def list_stacks(
-    stack_status_filter: str = None,
-    cloudformation_client: boto3.client = None,
+    stack_status_filter: Optional[str] = None,
+    cloudformation_client: Optional[boto3.client] = None,
 ) -> List[StackResponse]:
-    "function"
+    """
+    List CloudFormation stacks with optional status filtering.
 
+    Args:
+        stack_status_filter: Optional status filter for stacks.
+            Defaults to None.
+        cloudformation_client: Custom CloudFormation client. Defaults to
+            module client.
+
+    Returns:
+        A list of StackResponse objects containing stack summaries.
+    """
     if cloudformation_client is None:
         cloudformation_client = client
 

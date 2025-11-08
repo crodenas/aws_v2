@@ -1,7 +1,11 @@
 """
-This module provides functionality for sending emails using AWS SES (Simple Email Service).
+This module provides functionality for sending emails using AWS SES (Simple
+Email Service).
+
 It includes functions for sending both standard and raw emails.
 """
+
+from typing import Optional
 
 import boto3
 
@@ -15,18 +19,18 @@ client = session.client("ses")
 @pivot_exceptions
 def send_email(
     email: Email,
-    ses_client: boto3.client = None,
+    ses_client: Optional[boto3.client] = None,
 ) -> EmailResponse:
     """
     Sends an email using AWS SES.
 
     Args:
-        email (Email): The email data to be sent.
-        ses_client (boto3.client, optional): A custom SES client. Defaults to
-            the module-level client.
+        email: The email data to be sent.
+        ses_client: A custom SES client. Defaults to the module-level
+            client.
 
     Returns:
-        EmailResponse: The response from the SES service.
+        The response from the SES service.
     """
     if ses_client is None:
         ses_client = client
@@ -43,18 +47,18 @@ def send_email(
 
 @pivot_exceptions
 def send_raw_email(
-    raw_message: bytes, ses_client: boto3.client = None
+    raw_message: bytes, ses_client: Optional[boto3.client] = None
 ) -> RawEmailResponse:
     """
     Sends a raw email using AWS SES.
 
     Args:
-        raw_message (bytes): The raw email data to be sent.
-        ses_client (boto3.client, optional): A custom SES client. Defaults to the
-            module-level client.
+        raw_message: The raw email data to be sent.
+        ses_client: A custom SES client. Defaults to the module-level
+            client.
 
     Returns:
-        RawEmailResponse: The response from the SES service.
+        The response from the SES service.
     """
     if ses_client is None:
         ses_client = client

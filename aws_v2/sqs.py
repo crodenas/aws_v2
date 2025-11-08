@@ -1,8 +1,12 @@
 """
-This module provides utilities for interacting with AWS SQS (Simple Queue Service).
-It includes functions for extracting the region from an SQS URL and sending messages
-to an SQS queue.
+This module provides utilities for interacting with AWS SQS (Simple Queue
+Service).
+
+It includes functions for extracting the region from an SQS URL and sending
+messages to an SQS queue.
 """
+
+from typing import Optional
 
 import boto3
 
@@ -18,28 +22,31 @@ def get_region_from_url(url: str) -> str:
     Extract the AWS region from an SQS queue URL.
 
     Args:
-        url (str): The SQS queue URL.
+        url: The SQS queue URL.
 
     Returns:
-        str: The AWS region extracted from the URL.
+        The AWS region extracted from the URL.
     """
     return url.split(".")[1]
 
 
 @pivot_exceptions
 def send_message(
-    queue_url: str, message_body: str, sqs_client: boto3.client = None
+    queue_url: str,
+    message_body: str,
+    sqs_client: Optional[boto3.client] = None,
 ) -> SQSMessageResponse:
     """
     Send a message to an SQS queue.
 
     Args:
-        queue_url (str): The URL of the SQS queue.
-        message_body (str): The content of the message to send.
-        sqs_client (boto3.client, optional): A custom SQS client. Defaults to the module's client.
+        queue_url: The URL of the SQS queue.
+        message_body: The content of the message to send.
+        sqs_client: A custom SQS client. Defaults to the module's
+            client.
 
     Returns:
-        SQSMessageResponse: The response containing the message ID and MD5 checksum.
+        The response containing the message ID and MD5 checksum.
     """
     if sqs_client is None:
         sqs_client = client

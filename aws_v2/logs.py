@@ -3,7 +3,7 @@ This module provides functionality for interacting with AWS CloudWatch Logs.
 It includes functionality to filter log events.
 """
 
-from typing import List
+from typing import List, Optional
 
 import boto3
 
@@ -17,18 +17,19 @@ client = session.client("logs")
 @pivot_exceptions
 def filter_log_events(
     inputs: FilterLogEventsInput,
-    logs_client: boto3.client = None,
+    logs_client: Optional[boto3.client] = None,
 ) -> List[LogEvent]:
     """
-    Filters log events from AWS CloudWatch Logs based on the provided input parameters.
+    Filters log events from AWS CloudWatch Logs based on the provided
+    input parameters.
 
     Args:
-        inputs (FilterLogEventsInput): The input parameters for filtering log events.
-        logs_client (boto3.client, optional): The boto3 client for CloudWatch Logs.
-            Defaults to None.
+        inputs: The input parameters for filtering log events.
+        logs_client: The boto3 client for CloudWatch Logs. Defaults to
+            module client.
 
     Returns:
-        List[LogEvent]: A list of log events matching the filter criteria.
+        A list of log events matching the filter criteria.
     """
     if logs_client is None:
         logs_client = client

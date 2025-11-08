@@ -24,7 +24,10 @@ class TestOrganizations(unittest.TestCase):
                 "Accounts": [
                     {
                         "Id": "123456789012",
-                        "Arn": "arn:aws:organizations::123456789012:account/o-exampleorgid/123456789012",
+                        "Arn": (
+                            "arn:aws:organizations::123456789012:"
+                            "account/o-exampleorgid/123456789012"
+                        ),
                         "Name": "Master Account",
                         "Email": "main@example.com",
                         "Status": "ACTIVE",
@@ -35,7 +38,10 @@ class TestOrganizations(unittest.TestCase):
                     },
                     {
                         "Id": "234567890123",
-                        "Arn": "arn:aws:organizations::123456789012:account/o-exampleorgid/234567890123",
+                        "Arn": (
+                            "arn:aws:organizations::123456789012:"
+                            "account/o-exampleorgid/234567890123"
+                        ),
                         "Name": "Dev Account",
                         "Email": "dev@example.com",
                         "Status": "ACTIVE",
@@ -50,7 +56,10 @@ class TestOrganizations(unittest.TestCase):
                 "Accounts": [
                     {
                         "Id": "345678901234",
-                        "Arn": "arn:aws:organizations::123456789012:account/o-exampleorgid/345678901234",
+                        "Arn": (
+                            "arn:aws:organizations::123456789012:"
+                            "account/o-exampleorgid/345678901234"
+                        ),
                         "Name": "Prod Account",
                         "Email": "prod@example.com",
                         "Status": "ACTIVE",
@@ -96,7 +105,10 @@ class TestOrganizations(unittest.TestCase):
 
     @patch("aws_v2.organizations.client")
     def test_list_accounts_default_client(self, mock_default_client):
-        """Test that list_accounts uses the default client when none is provided."""
+        """
+        Test that list_accounts uses the default client when none is
+        provided.
+        """
         # Set up the default client mock
         mock_paginator = MagicMock()
         mock_default_client.get_paginator.return_value = mock_paginator
@@ -106,7 +118,10 @@ class TestOrganizations(unittest.TestCase):
                 "Accounts": [
                     {
                         "Id": "123456789012",
-                        "Arn": "arn:aws:organizations::123456789012:account/o-exampleorgid/123456789012",
+                        "Arn": (
+                            "arn:aws:organizations::123456789012:"
+                            "account/o-exampleorgid/123456789012"
+                        ),
                         "Name": "Master Account",
                         "Email": "main@example.com",
                         "Status": "ACTIVE",

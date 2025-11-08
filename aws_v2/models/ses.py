@@ -13,9 +13,11 @@ class Email:
     Represents the data required to send an email.
 
     Attributes:
-        source (str): The email address of the sender.
-        destination (dict): The destination details, including To, Cc, and Bcc addresses.
-        message (dict): The content of the email, including Subject, Body, etc.
+        source: The email address of the sender.
+        destination: The destination details, including To, Cc, and Bcc
+            addresses.
+        message: The content of the email, including Subject, Body,
+            etc.
     """
 
     source: str
@@ -29,9 +31,9 @@ class EmailResponse:
     Represents the response from sending a standard email.
 
     Attributes:
-        message_id (str): The unique identifier for the sent email.
-        response_metadata (dict): Metadata about the response, including HTTP status,
-            request ID, etc.
+        message_id: The unique identifier for the sent email.
+        response_metadata: Metadata about the response, including HTTP
+            status, request ID, etc.
     """
 
     message_id: str
@@ -44,9 +46,9 @@ class RawEmailResponse:
     Represents the response from sending a raw email.
 
     Attributes:
-        message_id (str): The unique identifier for the sent raw email.
-        response_metadata (dict): Metadata about the response, including HTTP status,
-            request ID, etc.
+        message_id: The unique identifier for the sent raw email.
+        response_metadata: Metadata about the response, including HTTP
+            status, request ID, etc.
     """
 
     message_id: str
