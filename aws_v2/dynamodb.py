@@ -5,6 +5,8 @@ This module provides functions for interacting with AWS DynamoDB service,
 including operations like scanning tables, querying data, etc.
 """
 
+from typing import Optional
+
 import boto3
 
 from . import session
@@ -17,28 +19,30 @@ client = session.client("dynamodb")
 @pivot_exceptions
 def scan(
     table_name: str,
-    filter_expression: str = None,
-    expression_attr_val: dict = None,
-    dynamodb_client: boto3.client = None,
+    filter_expression: Optional[str] = None,
+    expression_attr_val: Optional[dict] = None,
+    dynamodb_client: Optional[boto3.client] = None,
 ) -> DynamoDBScanOutput:
     """
     Scan a DynamoDB table with optional filtering.
 
-    This function performs a complete scan of a DynamoDB table, handling pagination
-    automatically to retrieve all items that match the provided filter expression.
+    This function performs a complete scan of a DynamoDB table, handling
+    pagination automatically to retrieve all items that match the
+    provided filter expression.
 
     Args:
-        table_name (str): The name of the DynamoDB table to scan.
-        filter_expression (str, optional): A filter expression for the scan operation.
+        table_name: The name of the DynamoDB table to scan.
+        filter_expression: A filter expression for the scan operation.
             Defaults to None.
-        expression_attr_val (dict, optional): A dictionary of expression attribute values
-            for the filter expression. Defaults to None.
-        dynamodb_client (boto3.client, optional): A boto3 DynamoDB client to use for the operation.
-            If None, the default client will be used. Defaults to None.
+        expression_attr_val: A dictionary of expression attribute
+            values for the filter expression. Defaults to None.
+        dynamodb_client: A boto3 DynamoDB client to use for the
+            operation. If None, the default client will be used.
+            Defaults to None.
 
     Returns:
-        DynamoDBScanOutput: An object containing the scan results, including items, count,
-                           scanned count, and other metadata.
+        An object containing the scan results, including items, count,
+        scanned count, and other metadata.
 
     Examples:
         >>> scan("my-table")
@@ -51,7 +55,6 @@ def scan(
         ... )
         DynamoDBScanOutput(items=[...], count=5, scanned_count=10, ...)
     """
-
     if dynamodb_client is None:
         dynamodb_client = client
 

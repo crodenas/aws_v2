@@ -60,9 +60,7 @@ def list_entities_for_policy(
 
     return PolicyEntities(
         policy_groups=[
-            Group(
-                group_name=group["GroupName"], group_id=group["GroupId"]
-            )
+            Group(group_name=group["GroupName"], group_id=group["GroupId"])
             for group in results.get("PolicyGroups", [])
         ],
         policy_users=[

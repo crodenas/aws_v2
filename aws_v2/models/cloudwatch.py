@@ -14,13 +14,15 @@ class MetricStatisticsInput:
     Represents the input parameters for fetching metric statistics.
 
     Attributes:
-        namespace (str): The namespace of the metric.
-        metric_name (str): The name of the metric.
-        dimensions (List[Dict[str, str]]): The dimensions for the metric.
-        start_time (datetime): The start time for the metric data.
-        end_time (datetime): The end time for the metric data.
-        period (int): The granularity, in seconds, of the returned data points.
-        statistics (List[str]): The metric statistics to retrieve (e.g., Average, Sum).
+        namespace: The namespace of the metric.
+        metric_name: The name of the metric.
+        dimensions: The dimensions for the metric.
+        start_time: The start time for the metric data.
+        end_time: The end time for the metric data.
+        period: The granularity, in seconds, of the returned data
+            points.
+        statistics: The metric statistics to retrieve (e.g., Average,
+            Sum).
     """
 
     namespace: str
@@ -38,8 +40,8 @@ class MetricStatisticsOutput:
     Represents the output of the metric statistics.
 
     Attributes:
-        label (str): The label for the metric.
-        datapoints (List[Dict[str, Any]]): The data points for the metric.
+        label: The label for the metric.
+        datapoints: The data points for the metric.
     """
 
     label: str

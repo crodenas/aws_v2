@@ -76,6 +76,4 @@ def create_waiter(
         A configured waiter object.
     """
     waiter_model = waiter.WaiterModel(waiter_config)
-    return waiter.create_waiter_with_client(
-        waiter_name, waiter_model, client
-    )
+    return waiter.create_waiter_with_client(waiter_name, waiter_model, client)

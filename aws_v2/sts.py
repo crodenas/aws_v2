@@ -1,5 +1,7 @@
 """
-This module provides utilities for interacting with AWS STS (Security Token Service).
+This module provides utilities for interacting with AWS STS (Security
+Token Service).
+
 Includes functions for assuming roles and retrieving caller identity.
 """
 
@@ -20,18 +22,21 @@ client = session.client("sts")
 
 @pivot_exceptions
 def assume_role(
-    role_arn: str, region_name: str = None, sts_client: boto3.client = None
+    role_arn: str,
+    region_name: Optional[str] = None,
+    sts_client: Optional[boto3.client] = None,
 ) -> AssumeRoleResponse:
     """
-    Assumes an AWS IAM role and returns temporary credentials and role user info.
+    Assumes an AWS IAM role and returns temporary credentials and role
+    user info.
 
     Args:
-        role_arn (str): The ARN of the role to assume.
-        region_name (str, optional): AWS region name. Defaults to None.
-        sts_client (boto3.client, optional): Custom STS client. Defaults to None.
+        role_arn: The ARN of the role to assume.
+        region_name: AWS region name. Defaults to None.
+        sts_client: Custom STS client. Defaults to None.
 
     Returns:
-        AssumeRoleResponse: Object containing credentials and assumed role user info.
+        Object containing credentials and assumed role user info.
     """
     if sts_client is None:
         sts_client = client
@@ -56,13 +61,14 @@ def get_caller_identity(
     sts_client: Optional[boto3.client] = None,
 ) -> CallerIdentityResponse:
     """
-    Returns the AWS account, user ID, and ARN for the current credentials.
+    Returns the AWS account, user ID, and ARN for the current
+    credentials.
 
     Args:
-        sts_client (boto3.client, optional): Custom STS client. Defaults to None.
+        sts_client: Custom STS client. Defaults to None.
 
     Returns:
-        CallerIdentityResponse: Object containing account, user ID, and ARN.
+        Object containing account, user ID, and ARN.
     """
     if sts_client is None:
         sts_client = client

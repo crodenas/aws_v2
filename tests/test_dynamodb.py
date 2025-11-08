@@ -119,7 +119,8 @@ class TestDynamoDB(unittest.TestCase):
     @patch("aws_v2.dynamodb.client")
     def test_scan_with_pagination(self, mock_client):
         """Test scan function with pagination."""
-        # Configure the mock client to return different responses on subsequent calls
+        # Configure the mock client to return different responses on
+        # subsequent calls
         mock_client.scan.side_effect = self.mock_paginated_responses
 
         # Call the function

@@ -1,9 +1,9 @@
 """
-This module provides functions to interact with AWS Service Catalog, including retrieving
-and searching provisioned products and products.
+This module provides functions to interact with AWS Service Catalog,
+including retrieving and searching provisioned products and products.
 """
 
-from typing import List
+from typing import List, Optional
 
 import boto3
 
@@ -21,27 +21,27 @@ client = session.client("servicecatalog")
 
 @pivot_exceptions
 def get_provisioned_product_outputs(
-    provisioned_product_id: str = None,
-    provisioned_product_name: str = None,
-    servicecatalog_client: boto3.client = None,
+    provisioned_product_id: Optional[str] = None,
+    provisioned_product_name: Optional[str] = None,
+    servicecatalog_client: Optional[boto3.client] = None,
 ) -> List[ProvisionedProductOutput]:
     """
     Retrieves the outputs of provisioned products.
 
     Args:
-        provisioned_product_id (str, optional): The ID of the provisioned product.
-        provisioned_product_name (str, optional): The name of the provisioned product.
-        servicecatalog_client (boto3.client, optional): A boto3 Service Catalog client.
+        provisioned_product_id: The ID of the provisioned product.
+        provisioned_product_name: The name of the provisioned product.
+        servicecatalog_client: A boto3 Service Catalog client.
 
     Returns:
-        List[ProvisionedProductOutput]: A list of provisioned product outputs.
+        A list of provisioned product outputs.
     """
     results = []
 
     if servicecatalog_client is None:
         servicecatalog_client = client
 
-    next_token: str = None
+    next_token: Optional[str] = None
     while True:
         params = {
             "ProvisionedProductName": provisioned_product_name,
@@ -69,16 +69,16 @@ def get_provisioned_product_outputs(
 
 @pivot_exceptions
 def scan_provisioned_products(
-    servicecatalog_client: boto3.client = None,
+    servicecatalog_client: Optional[boto3.client] = None,
 ) -> List[ScannedProvisionedProduct]:
     """
     Scans all provisioned products.
 
     Args:
-        servicecatalog_client (boto3.client, optional): A boto3 Service Catalog client.
+        servicecatalog_client: A boto3 Service Catalog client.
 
     Returns:
-        List[ScannedProvisionedProduct]: A list of scanned provisioned products.
+        A list of scanned provisioned products.
     """
     results = []
 
@@ -105,23 +105,23 @@ def scan_provisioned_products(
 
 @pivot_exceptions
 def search_products(
-    servicecatalog_client: boto3.client = None,
+    servicecatalog_client: Optional[boto3.client] = None,
 ) -> List[ProductSummary]:
     """
     Searches for products in the Service Catalog.
 
     Args:
-        servicecatalog_client (boto3.client, optional): A boto3 Service Catalog client.
+        servicecatalog_client: A boto3 Service Catalog client.
 
     Returns:
-        List[ProductSummary]: A list of product summaries.
+        A list of product summaries.
     """
     results = []
 
     if servicecatalog_client is None:
         servicecatalog_client = client
 
-    next_token: str = None
+    next_token: Optional[str] = None
     while True:
         params = {}
         if next_token:
@@ -146,23 +146,23 @@ def search_products(
 
 @pivot_exceptions
 def search_provisioned_products(
-    servicecatalog_client: boto3.client = None,
+    servicecatalog_client: Optional[boto3.client] = None,
 ) -> List[SearchedProvisionedProduct]:
     """
     Searches for provisioned products in the Service Catalog.
 
     Args:
-        servicecatalog_client (boto3.client, optional): A boto3 Service Catalog client.
+        servicecatalog_client: A boto3 Service Catalog client.
 
     Returns:
-        List[SearchedProvisionedProduct]: A list of searched provisioned products.
+        A list of searched provisioned products.
     """
     results = []
 
     if servicecatalog_client is None:
         servicecatalog_client = client
 
-    next_token: str = None
+    next_token: Optional[str] = None
     while True:
         params = {}
         if next_token:

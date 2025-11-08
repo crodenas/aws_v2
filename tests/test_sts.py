@@ -35,7 +35,10 @@ class TestSTS(unittest.TestCase):
             },
             "AssumedRoleUser": {
                 "AssumedRoleId": "AROEXAMPLE:session",
-                "Arn": "arn:aws:sts::123456789012:assumed-role/example-role/session",
+                "Arn": (
+                    "arn:aws:sts::123456789012:"
+                    "assumed-role/example-role/session"
+                ),
             },
         }
         mock_client.assume_role.return_value = mock_response
