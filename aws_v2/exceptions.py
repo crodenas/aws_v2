@@ -6,6 +6,7 @@ decorator for transforming boto3 exceptions into local exceptions.
 """
 
 import functools
+from botocore.exceptions import ClientError
 
 
 class AwsError(Exception):
@@ -36,6 +37,19 @@ def pivot_exceptions(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except ClientError as client_exc:
+            if (
+                client_exc.response["Error"]["Code"]
+                == "UnrecognizedClientException"
+            ):
+                raise AwsError(
+                    "AWS credentials are not configured or invalid. "
+                    "Please run 'aws configure' or set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables."
+                ) from client_exc
+            raise AwsError(
+                f"An error occurred in "
+                f"{func.__module__}.{func.__name__}: {client_exc}"
+            ) from client_exc
         except Exception as exc:
             raise AwsError(
                 f"An error occurred in "

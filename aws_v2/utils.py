@@ -11,6 +11,8 @@ from typing import Optional
 import boto3
 from botocore import waiter
 
+from aws_v2.exceptions import AwsError
+
 from . import get_session, sts
 
 
@@ -77,3 +79,20 @@ def create_waiter(
     """
     waiter_model = waiter.WaiterModel(waiter_config)
     return waiter.create_waiter_with_client(waiter_name, waiter_model, client)
+
+
+def validate_credentials() -> bool:
+    """
+    Validate AWS credentials by attempting to get the caller identity.
+
+    Returns:
+        True if credentials are valid.
+
+    Raises:
+        AwsError: If credentials are invalid or an error occurs.
+    """
+    try:
+        sts.get_caller_identity()
+        return True
+    except Exception as e:
+        raise AwsError(f"AWS credentials validation failed: {e}") from e
