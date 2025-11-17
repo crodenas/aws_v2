@@ -11,7 +11,7 @@ from typing import Optional
 import boto3
 from botocore import waiter
 
-from aws_v2.exceptions import AwsError
+from .exceptions import AwsError
 
 from . import get_session, sts
 
