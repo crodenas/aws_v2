@@ -12,11 +12,33 @@ This library is designed as an abstraction on top of boto3 to allow easy proper 
 - Python 3.13+
 - AWS credentials configured (see [AWS Credentials Guide](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html))
 
-### Install from source
+### Install from GitHub
+
+**Using uv (recommended):**
+```bash
+uv add git+https://github.com/crodenas/aws_v2.git
+```
+
+**Using pip:**
+```bash
+pip install git+https://github.com/crodenas/aws_v2.git
+```
+
+**Install a specific version/branch:**
+```bash
+uv add git+https://github.com/crodenas/aws_v2.git@v0.1.0
+# or
+pip install git+https://github.com/crodenas/aws_v2.git@main
+```
+
+### Install from source (for development)
+
 ```bash
 git clone https://github.com/crodenas/aws_v2.git
 cd aws_v2
 uv install
+# or for editable install with dev dependencies
+uv pip install -e ".[dev]"
 ```
 
 ## Usage
