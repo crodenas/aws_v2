@@ -51,7 +51,7 @@ def create_stack(
 
     return StackResponse(
         stack_id=response["StackId"],
-        stack_name=response["StackName"],
+        stack_name=stack_name,
     )
 
 

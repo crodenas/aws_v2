@@ -23,7 +23,6 @@ client = session.client("sts")
 @pivot_exceptions
 def assume_role(
     role_arn: str,
-    region_name: Optional[str] = None,
     sts_client: Optional[boto3.client] = None,
 ) -> AssumeRoleResponse:
     """
@@ -32,7 +31,6 @@ def assume_role(
 
     Args:
         role_arn: The ARN of the role to assume.
-        region_name: AWS region name. Defaults to None.
         sts_client: Custom STS client. Defaults to None.
 
     Returns:
@@ -40,8 +38,6 @@ def assume_role(
     """
     if sts_client is None:
         sts_client = client
-    if region_name is None:
-        region_name = sts_client.meta.region_name
 
     response = sts_client.assume_role(
         RoleArn=role_arn, RoleSessionName="pivot-session"

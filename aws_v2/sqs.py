@@ -76,6 +76,9 @@ def receive_message(
             for a message to arrive in the queue before returning.
         sqs_client: A custom SQS client. Defaults to the module's
             client.
+
+    Returns:
+        A list of SQSMessage objects containing the received messages.
     """
     if sqs_client is None:
         sqs_client = client

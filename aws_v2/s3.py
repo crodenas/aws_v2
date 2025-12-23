@@ -100,6 +100,6 @@ def list_bucket_contents(
     response = pager.paginate(Bucket=bucket_name)
     object_list = []
     for page in response:
-        for list_item in page["Contents"]:
+        for list_item in page.get("Contents", []):
             object_list.append(S3ObjectMetadata(key=list_item["Key"]))
     return object_list

@@ -51,3 +51,8 @@ profile = "black"
 max-line-length = 79
 extend-ignore = ["E203", "W503"]
 exclude = ["__pycache__", ".git", "build", "dist"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
