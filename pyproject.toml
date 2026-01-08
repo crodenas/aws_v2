@@ -7,7 +7,7 @@ name = "aws-v2"
 version = "0.1.0"
 description = "A Python library providing an abstraction layer on top of boto3 for simplified AWS service interactions"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Chris Rodenas", email = "rodenas@gmail.com"}
@@ -18,6 +18,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
