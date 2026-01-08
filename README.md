@@ -9,7 +9,7 @@ This library is designed as an abstraction on top of boto3 to allow easy proper 
 ## Installation
 
 ### Requirements
-- Python 3.13+
+- Python 3.10+
 - AWS credentials configured (see [AWS Credentials Guide](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html))
 
 ### Install from GitHub
